@@ -2,16 +2,16 @@
 
     class Connect{
 
-        public static function conection(){
+        public static function connection(){
 
             try{
 
-                $conection = new mysqli_connect("localhost", "root", "", "vidstofind");
+                $con = mysqli_connect("localhost", "root", "", "vidstofind");
 
-                $connection->set_charset("UTF-8");
+                $con->set_charset("UTF-8");
 
-                if ($conection->connect_errno) {
-                    echo "Conexión fallida:" . $conection->connect_error;
+                if ($con->connect_errno) {
+                    echo "Conexión fallida:" . $con->connect_error;
                     exit();
                 }
 
@@ -19,10 +19,10 @@
 
                 die("Error" . $e->getMessage());
 
-                echo "Línea del error". $e->getLine():
+                echo "Línea del error". $e->getLine();
 
             }
-            return $connection;
+            return $con;
         }        
 
     }

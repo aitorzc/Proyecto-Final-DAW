@@ -9,7 +9,7 @@
     
     <?php
 
-        for ($i = 0; $i < count($matrizUsuarios)) {
+        for ($i = 0; $i < count($matrizUsuarios); $i++) {
 
             echo $matrizUsuarios[$i];
 

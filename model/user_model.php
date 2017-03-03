@@ -7,9 +7,9 @@
 
         public function __construct(){
 
-            require_once("connect.php");
+            require_once("model/connect.php");
 
-            $this->db = connect::connection();
+            $this->db = Connect::connection();
 
             $this->usuarios = array();
 
