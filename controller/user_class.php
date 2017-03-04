@@ -56,15 +56,15 @@
             return $this->firma;
         }
 
-        public function setImg(){
+        public function setImg($img){
             $this->img = $img;
         }
         public function getImg(){
             return $this->img;
         }
 
-        public function setTipo(){
-            $this->tipo = tipo;
+        public function setTipo($tipo){
+            $this->tipo = $tipo;
         }
         public function getTipo(){
             return $this->tipo;

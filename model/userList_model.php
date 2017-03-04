@@ -10,17 +10,17 @@
 
             require_once("model/connect.php");
 
-            $this->db = Connection::connectDB;
+            $this->db = Connection::connect();
 
-            $userList = array();
+            $this->userList = array();
 
-            require_once("controller/user_controller.php");
+            require_once("controller/user_class.php");
 
         }
         // Recogida de usuarios de la base de datos
         public function getUserList(){
 
-            $consulta = $db->query("SELECT * FROM usuario");
+            $consulta = $this->db->query("SELECT * FROM usuario");
 
             while ($row = $consulta->fetch_row()) {
 
@@ -40,13 +40,13 @@
 
                 $usuario->setTipo($row[6]);
 
-                array_push($userList, $usuario);
+                 array_push($this->userList, $usuario);
 
             }
             // Fin de conexión
-            Connection::disconnect;
+            Connection::disconnect();
 
-            return $userList;
+            return $this->userList;
 
         }
 

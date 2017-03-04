@@ -11,7 +11,7 @@
         // Recorremos la lista de usuarios
         for ($i = 0; $i < count($matrizUsuarios); $i++) {
 
-            echo $matrizUsuarios[$i];
+            echo $matrizUsuarios[$i]->getLogin() . "<br>";
 
         }
 
