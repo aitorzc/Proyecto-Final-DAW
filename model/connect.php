@@ -1,8 +1,8 @@
 <?php
 
-    class Connect{
-
-        public static function connection(){
+    class Connection{
+        // Conexión al servidor o en caso de error recoger el mensaje
+        public static function connectDB(){
 
             try{
 
@@ -23,6 +23,12 @@
 
             }
             return $con;
+        }
+        // Desconexión del servidor
+        public static function disconnect(){
+
+            $con->close();
+
         }        
 
     }

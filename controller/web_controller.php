@@ -1,10 +1,10 @@
 <?php
 
-    require_once("model/user_model.php");
+    require_once("model/userList_model.php");
 
-    $usuarios = new user_model();
+    $usuarios = new userList();
 
-    $matrizUsuarios = $usuarios->getUsers();
+    $matrizUsuarios = $usuarios->getUserList();
 
     require_once("view/web_view.php");
 
