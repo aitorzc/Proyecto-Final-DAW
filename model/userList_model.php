@@ -20,7 +20,7 @@
         // Recogida de usuarios de la base de datos
         public function getUserList(){
 
-            $consulta = $this->db->query("SELECT * FROM usuario");
+            $consulta = $this->db->query("SELECT * FROM usuarios");
 
             while ($row = $consulta->fetch_row()) {
 

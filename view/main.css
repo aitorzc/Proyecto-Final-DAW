@@ -1,0 +1,33 @@
+.container-fluid{
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    box-shadow: 0 0 10px 0px black;
+}
+.sidenav a, .sidenav li {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    border-color: #818181;
+    background-color: #111;
+    display: block;
+    transition: 0.3s
+}
+#btnClose {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
