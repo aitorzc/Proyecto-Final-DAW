@@ -14,6 +14,12 @@
             echo $matrizUsuarios[$i]->getLogin() . "<br>";
 
         }
+        // Recorremos la lista de categorías
+        for($i = 0; $i < count($matrizCategorias; $i++)){
+
+            echo $matrizCategorias->getNombre();
+
+        }
 
     ?>
 

@@ -14,7 +14,7 @@
 
             $this->userList = array();
 
-            require_once("controller/user_class.php");
+            require_once("model/user_class.php");
 
         }
         // Recogida de usuarios de la base de datos

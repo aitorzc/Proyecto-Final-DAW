@@ -11,15 +11,7 @@
         private $tipo; 
         // Constructor
         public function __construct(){
-
-            require_once("model/connect.php");
-
-            $this->db = Connection::connect();
-
-            $this->userList = array();
-
         }
-
         // Setters y getters
         public function setLogin($login){
             $this->login = $login;
