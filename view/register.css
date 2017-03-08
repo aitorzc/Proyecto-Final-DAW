@@ -3,3 +3,11 @@
     margin-top: 60px;
 
 }
+.main-content{
+
+    width: 500px;
+    height: auto;
+    margin: auto;
+    margin-top: 10%;
+    border-radius: 4px;
+}
