@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="main.js"></script>
     <title>VidsToFind</title>
 </head>
 <body>
@@ -15,7 +14,7 @@
 <nav class="navbar navbar-inverse">   
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
-            <li><a style="cursor:pointer" onclick="openSidenav()">&#9776; Menu</a></li>
+            <li><a onmouseover="rightIconMenu(this)" id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Menú</a></li>
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#">Tal</a></li>
             <li><a href="#">Ytal</a></li>
@@ -39,7 +38,6 @@
 <div id="sidenav" class="sidenav">
     <nav>
         <ul class="sidebar-nav nav list-group">
-            <a href="#"id="btnClose" onclick="closeSidenav()">&times;</a>
             <li class="list-group-item">Categorías</li>
             <a href="#" class="list-group-item">Automovilismo</a>
             <a href="#" class="list-group-item">Ciencia y tecnología</a>
@@ -54,6 +52,7 @@
     <p>Hola.</p>
 </div>
 
+<script src="main.js"></script>
 
 </body>
 </html>
