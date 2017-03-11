@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Nick:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="nick" maxlength="15" placeholder="ej: johnTheExample *">
+                            <input type="text" class="form-control" id="nick" minlength="4" maxlength="15" placeholder="ej: johnTheExample *">
                             <span class="alert-danger">El nick debe contener entre 4 y 15 carácteres</span>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="view/main/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>VidsToFind</title>
@@ -31,7 +31,7 @@
             </div>
         </form>
             <li><a href="#"><span class="glyphicon glyphicon-user"></span> Regístrate</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="view/register"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
     </div>    
 </nav>
@@ -39,10 +39,14 @@
     <nav>
         <ul class="sidebar-nav nav list-group">
             <li class="list-group-item">Categorías</li>
-            <a href="#" class="list-group-item">Automovilismo</a>
-            <a href="#" class="list-group-item">Ciencia y tecnología</a>
-            <a href="#" class="list-group-item">Cine y animación</a>
-            <a href="#" class="list-group-item">Comedia</a>
+            <?php
+                // Lista de categorías
+                for ($i = 0; $i < count($matrizCategorias); $i++) {
+
+                    echo "<a href='#' class='list-group-item'>" . $matrizCategorias[$i]->getNombre() . "</a>";
+
+                }
+            ?>
         </ul>
     </nav>
   
@@ -52,7 +56,7 @@
     <p>Hola.</p>
 </div>
 
-<script src="main.js"></script>
+<script src="view/main/main.js"></script>
 
 </body>
 </html>

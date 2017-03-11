@@ -28,10 +28,18 @@ function formValidate(){
         
         alert[0].removeAttribute("hidden");
 
+    }else{
+
+        alert[0].setAttribute("hidden", "hidden");
+
     }
-    if (nombre.value.length != 0 && !(nombreRegex.test(nombre.value))) {
+    if (name.value.length != 0 && !(nombreRegex.test(name.value))) {
         
         alert[1].removeAttribute("hidden");
+
+    }else{
+
+        alert[1].setAttribute("hidden", "hidden");
 
     }
     if (email.value.length != 0 && !(emailRegex.test(email.value))) {

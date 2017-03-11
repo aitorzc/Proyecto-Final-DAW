@@ -7,8 +7,8 @@
 <body>
 
 <?php
-
-    require_once("controller/web_controller.php");
+    
+    require_once("controller/main_controller.php");
 
 ?>    
 
