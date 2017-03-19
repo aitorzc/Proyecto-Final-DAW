@@ -22,7 +22,7 @@ function formValidate(){
 // Comprueba que el nick tenga un mínimo 4 carácteres y un máximo de 15
     var nickRegex = /^[a-z\d_]{4,15}$/i;
 // Comprueba que la contraseña tenga almenos una letra mínuscula, una máyuscula, contener un numero y tener una longitud entre 8 y 20
-    var pswdRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
+    var pswdRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,20}$/;
 
     if (nick.value.length != 0 && !(nickRegex.test(nick.value))) {
         
@@ -53,7 +53,20 @@ function formValidate(){
     }
     if (pswd.value.length != 0 && !(pswdRegex.test(pswd.value))) {
         
-        alert[3].removeAttribute("hidden");
+        return alert[3].removeAttribute("hidden");
+
+    }else{
+
+        alert[3].setAttribute("hidden", "hidden");
+        
+    }
+    if (pswd.value != pswd2.value) {
+
+        alert[4].removeAttribute("hidden");
+
+    }else{
+
+         alert[4].setAttribute("hidden", "hidden");
 
     }
     

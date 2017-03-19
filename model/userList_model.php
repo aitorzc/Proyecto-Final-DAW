@@ -34,11 +34,11 @@
 
                 $usuario->setNombre($row[3]);
 
-                $usuario->setFirma($row[4]);
+                $usuario->setDNI($row[4]);
 
                 $usuario->setImg($row[5]);
 
-                $usuario->setTipo($row[6]);
+                $usuario->setRango($row[6]);
 
                  array_push($this->userList, $usuario);
 

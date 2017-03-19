@@ -21,15 +21,15 @@
             <div id="entrar" class="tab-pane fade in active">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Email o Nick:</label>
+                        <label class="control-label col-sm-2">Email:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="nick" maxlength="12" placeholder="ej: johnTheExample">
+                            <input type="text" class="form-control" id="emailLog" maxlength="12" placeholder="ej: johnTheExample">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Password:</label>
                         <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswd" maxlength="25" placeholder="ej: ex@mPl3">
+                            <input type="password" class="form-control" id="pswdLog" maxlength="20" placeholder="ej: ex@mPl3">
                         </div>
                     </div>
                     <div class="form-group">        
@@ -67,15 +67,15 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Password:</label>
                         <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswd" maxlength="25" placeholder="ej: ex@mPl3 *">
+                            <input type="password" class="form-control" id="pswd" maxlength="20" placeholder="ej: ex@mPl3 *">
                             <span class="alert-danger">La contraseña debe contener una minúscula, una mayúscula , un número y comprendido entre 4 y 20 carácteres</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Repetir Password:</label>
                         <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswd2" maxlength="25" placeholder="ej: ex@mPl3 *">
-                            <span class="alert-danger"></span>
+                            <input type="password" class="form-control" id="pswd2" maxlength="20" placeholder="ej: ex@mPl3 *">
+                            <span class="alert-danger">Las contraseñas deben coincidir</span>
                         </div>
                     </div>
                     <div class="form-group">        

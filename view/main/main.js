@@ -7,6 +7,7 @@ function openSidenav(){
     btnMenu.firstChild.className = "glyphicon glyphicon-menu-left";
     btnMenu.removeAttribute("onclick");
     btnMenu.setAttribute("onclick", "closeSidenav()");
+    
 }
 //Cerrar el nav lateral
 function closeSidenav(){

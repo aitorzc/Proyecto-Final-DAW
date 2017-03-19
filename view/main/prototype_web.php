@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="view/main/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>VidsToFind</title>
+    <title>Torneos</title>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">   
+<nav class="navbar">   
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
-            <li><a onmouseover="rightIconMenu(this)" id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Menú</a></li>
+            <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Menú</a></li>
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#">Tal</a></li>
             <li><a href="#">Ytal</a></li>
@@ -30,8 +30,7 @@
                 </div>
             </div>
         </form>
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Regístrate</a></li>
-            <li><a href="view/register"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="view/register"><span class="glyphicon glyphicon-user"></span> Entra/Regístrate</a></li>
         </ul>
     </div>    
 </nav>
@@ -41,9 +40,9 @@
             <li class="list-group-item">Categorías</li>
             <?php
                 // Lista de categorías
-                for ($i = 0; $i < count($matrizCategorias); $i++) {
+                for ($i = 0; $i < count($matrizUsuarios); $i++) {
 
-                    echo "<a href='#' class='list-group-item'>" . $matrizCategorias[$i]->getNombre() . "</a>";
+                    echo "<a href='#' class='list-group-item'>" . $matrizUsuarios[$i]->getNombre() . "</a>";
 
                 }
             ?>

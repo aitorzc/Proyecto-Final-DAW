@@ -1,11 +1,11 @@
 <?php
 
-    require_once("model/categoryList_model.php");
+    require_once("model/userList_model.php");
 
     //Recogemos lista de categorías
-    $categorias = new categoryList();
+    $usuarios = new userList();
 
-    $matrizCategorias = $categorias->getCategoryList();
+    $matrizUsuarios = $usuarios->getUserList();
 
     require_once("view/main/prototype_web.php");
 

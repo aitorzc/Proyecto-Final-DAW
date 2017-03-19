@@ -6,9 +6,9 @@
         private $pswd;
         private $email;
         private $nombre;
-        private $firma;
+        private $DNI;
         private $img;
-        private $tipo; 
+        private $rango; 
         // Constructor
         public function __construct(){
         }
@@ -41,11 +41,11 @@
             return $this->nombre;
         }
 
-        public function setFirma($firma){
-            $this->firma = $firma;
+        public function setDNI($DNI){
+            $this->DNI = $DNI;
         }
-        public function getFirma(){
-            return $this->firma;
+        public function getDNI(){
+            return $this->DNI;
         }
 
         public function setImg($img){
@@ -55,11 +55,11 @@
             return $this->img;
         }
 
-        public function setTipo($tipo){
-            $this->tipo = $tipo;
+        public function setRango($rango){
+            $this->rango = $rango;
         }
-        public function getTipo(){
-            return $this->tipo;
+        public function getRango(){
+            return $this->rango;
         }
 
     }
