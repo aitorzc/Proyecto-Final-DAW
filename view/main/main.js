@@ -18,3 +18,7 @@ function closeSidenav(){
     btnMenu.setAttribute("onclick",  "openSidenav()");
 
 }
+// Calendario para elegir fecha de torneo
+$(function () {
+    $('#datetimepicker').datetimepicker();
+});

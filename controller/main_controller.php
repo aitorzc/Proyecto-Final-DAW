@@ -1,11 +1,11 @@
 <?php
 
-    require_once("model/userList_model.php");
+    require_once("model/sportList_model.php");
 
     //Recogemos lista de categorías
-    $usuarios = new userList();
+    $deportes = new sportList();
 
-    $matrizUsuarios = $usuarios->getUserList();
+    $matrizDeportes = $deportes->getSportList();
 
     require_once("view/main/prototype_web.php");
 

@@ -16,7 +16,6 @@ body{
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
-    box-shadow: 0 0 10px 0px black;
 }
 .sidenav a, .sidenav li {
     padding: 8px 8px 8px 32px;
@@ -28,6 +27,9 @@ body{
     display: block;
     transition: 0.3s
 }
+.list-group-item > a{
+    cursor: pointer;
+}
 #btnClose {
     position: absolute;
     top: 0;
@@ -36,7 +38,8 @@ body{
     margin-left: 50px;
 }
 #btnMenu{
-
     cursor: pointer;
-
+}
+.top-spacer{
+    margin-top:30px;
 }
