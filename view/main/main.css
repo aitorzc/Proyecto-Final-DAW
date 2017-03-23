@@ -40,6 +40,18 @@ body{
 #btnMenu{
     cursor: pointer;
 }
-.top-spacer{
-    margin-top:30px;
+.stage{
+    width: 200px;
+    height: 180px;
+    float: right;
+    margin-right: 5%;
+    border: 1px solid black;
+}
+#img1{
+    background-image: url("volleyball.jpg");
+    background-size: cover;
+}
+paddAll{
+    padding-left:10px;
+    padding-right:10px;
 }

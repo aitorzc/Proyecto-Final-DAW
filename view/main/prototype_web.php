@@ -53,10 +53,10 @@
     </nav>
   
 </div>
-<div class="container">
+<div class="container-fluid paddAll">
     <h2 class="text-center">Nuevo torneo</h2>
     <form>
-    <div class="row top-spacer">
+    <div class="row">
         <div class="form-group ">
             <h3>Paso 1: ¿Qué vamos a jugar?</h3>
             <div class="col-xs-3 col-sm-3">
@@ -86,8 +86,11 @@
                 </select>
             </div>
         </div>
+        <div class="stage" id="img1">
+
+        </div>
     </div>
-    <div class="row top-spacer">
+    <div class="row">
         <div class="form-group">
             <h3>Paso 2: ¿Quién juega?</h3>  
             <div class="col-xs-3 col-sm-3">
@@ -134,8 +137,11 @@
                 <label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
             </div>
         </div>
+        <div class="stage">
+
+        </div>
     </div>
-    <div class="row top-spacer">
+    <div class="row">
         <div class"form-group">
             <h3>Paso 3: Especificaciones</h3>
             <div class="col-xs-3 col-sm-3">
@@ -150,6 +156,13 @@
             <div class="col-xs-6 col-sm-6">
             <textarea class="form-control" rows="5" id="comment" placeholder="Añadir comentario para los alumnos (opcional)"></textarea>
         </div>
+    </div>
+    <div class="stage">
+
+    </div>
+    <div class="row">
+        <div class="col-xs-5">
+        <input type="submit" class="btn btn-info" value="Crear torneo" name="sendNewTourn">
     </div>
     </form>
 </div>
