@@ -19,22 +19,22 @@
         </ul>
         <div class="tab-content">
             <div id="entrar" class="tab-pane fade in active">
-                <form class="form-horizontal">
+                <form action="../../controller/login_controller.php" method="POST" class="form-horizontal">
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Email:</label>
+                        <label class="control-label col-sm-2">Nick:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="emailLog" maxlength="12" placeholder="ej: johnTheExample">
+                            <input type="text" class="form-control" name="nickLog" id="nickLog" maxlength="12" placeholder="ej: johnTheExample">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Password:</label>
                         <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswdLog" maxlength="20" placeholder="ej: ex@mPl3">
+                            <input type="password" class="form-control" name="pswdLog" id="pswdLog" maxlength="20" placeholder="ej: ex@mPl3">
                         </div>
                     </div>
                     <div class="form-group">        
                         <div class="col-sm-offset-2 col-sm-8">
-                            <button type="submit" class="btn btn-info">Entrar</button>
+                            <button type="submit" name="sendLog" class="btn btn-info">Entrar</button>
                         </div>
                     </div>
                 </form>
