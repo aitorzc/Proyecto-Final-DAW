@@ -8,15 +8,8 @@
 <body>
 
 <?php
-    
-    session_start();
-
-    if(!isset($_SESSION['user'])){
-        
-        require_once("controller/main_controller.php");
-
-    }
-?>    
+     require_once("controller/main_controller.php");
+?>
 
 </body>
 </html>

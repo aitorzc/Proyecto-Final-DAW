@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,7 @@
             <li class="active"><a href="#">Inicio</a></li>
             <li><a href="tournament_history">Historial de Torneos</a></li>
             <li><a href="new_tournament">Nuevo torneo</a></li>
-            <li><p class="navbar-text">Some text</p></li>
+            <li><p class="navbar-text">Bienvenido <?php $_SESSION['user']->getNombre() ?></p></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <form class="navbar-form navbar-left">

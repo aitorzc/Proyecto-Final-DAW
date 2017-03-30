@@ -1,16 +1,7 @@
 <?php
 
-    include_once("../model/userList_model.php");
-    include_once("../model/user_class.php");
-
-    include_once("../view/register/");
-
-    $userList = new userList();
-
-    $allUsers = $userList->getUserList();
-
-    $message = "";
-
+    include_once("model/userList_model.php");
+    include_once("model/user_class.php");
 
 // Peticion de login
     if (isset($_POST['sendLog'])) {
@@ -21,53 +12,48 @@
 
     function checkLogin(){
 
-         foreach ($allUsers as $user) {
+        $userLog = $_POST['nickLog'];
+        $pswdLog = $_POST['pswdLog'];
 
-            $userLogin = $user->getLogin();
-            $userPswd = $user->getPswd();
+        $userList = new userList();
 
-// Si encuentra coincidencia en el nick comprueba que la contraseña sea la correcta
-            if ($userLogin == $_POST['nickLog']) {
+        $message = "";
+            
+        $userResult = $userList->findUser($userLog);
 
-                if ($userPswd == $_POST['pswdLog']) {
+        if($userResult->getLogin() == $userLog){
 
-                    $userLogged = $user;
-                    $message.= "Bienvenido " . $user->getNombre();
+            if($userResult->getPswd() == $pswdLog){
 
-                    return loginAccess($userLogged);
+                $message = "Bienvenido ". $userLog;
+                echo $message;
+                loginAccess($userResult);
+            }
+            
+        }else{
 
-                }else{
-
-                   return $message.= "Contraseña incorrecta";
-
-                }
-
-            }else{
-
-                 return $message.= "Login o contraseña incorrecto";
-
-            }  
+            $message = "Nick o password erroneos";
+            echo $message;
         }
+
     }
-
+// Crear sesion para el nuevo usuario y comprobar su rango
     function loginAccess($user){
-
-         session_start();
 
          $_SESSION['user'] = $user;
 
          if (checkUserRange() == 2) {
 
-            header("Location: 127.0.0.1/dashboard/proyecto/view/manegement/");
+            header("Location: view/management");
 
          }else{
 
-            header("Location: 127.0.0.1/dashboard/proyecto");
+            header("Location: ./");
 
          }
          
     }
-
+// Funcion para comprobar rango
     function checkUserRange () {
 
         if(isset($_SESSION['user'])){

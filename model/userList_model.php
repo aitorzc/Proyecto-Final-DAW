@@ -50,6 +50,33 @@
 
         }
 
+        public function findUser($user){
+
+            $pre = "SELECT * FROM usuarios WHERE Login = '".$user."'";
+            $consulta = $this->db->query($pre);
+            $userLog = new user();
+            while ($row = $consulta->fetch_row()) {
+
+                $userLog->setLogin($row[0]);
+
+                $userLog->setPswd($row[1]);
+
+                $userLog->setEmail($row[2]);
+
+                $userLog->setNombre($row[3]);
+
+                $userLog->setDNI($row[4]);
+
+                $userLog->setImg($row[5]);
+
+                $userLog->setRango($row[6]);
+                
+            }
+
+            return $userLog;
+
+        }
+
     }
 
 ?>

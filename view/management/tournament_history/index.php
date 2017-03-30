@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../main/main.css">
+    <link rel="stylesheet" href="../../main/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Torneos</title>
@@ -15,10 +15,9 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
             <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="tournament_history">Historial de Torneos</a></li>
-            <li><a href="new_tournament">Nuevo torneo</a></li>
-            <li><p class="navbar-text">Some text</p></li>
+            <li class="active"><a href="../">Inicio</a></li>
+            <li><a href="./">Historial de Torneos</a></li>
+            <li><a href="../new_tournament">Nuevo torneo</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <form class="navbar-form navbar-left">
@@ -56,11 +55,8 @@
 </div>
 <div class="container-fluid paddAll">
     
-
-
 </div>
-
-<script src="../main/main.js"></script>
+<script src="../../main/main.js"></script>
 
 </body>
 </html>

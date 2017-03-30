@@ -9,6 +9,19 @@ window.onload = function () {
     }
     
 }
+
+function logValidate(){
+
+    var nick = document.getElementById("nickLog");
+    var pswd = document.getElementById("pswdLog");
+
+    if(nick.value.length > 0 && pswd.value.length > 6){
+
+        document.getElementById("sendLog").removeAttribute("disabled");
+
+    }
+
+}
 function formValidate(){
     var nick = document.getElementById("nick");
     var email = document.getElementById("email");
