@@ -2,7 +2,7 @@
 
     include_once("model/userList_model.php");
     include_once("model/user_class.php");
-
+    session_start();
 // Peticion de login
     if (isset($_POST['sendLog'])) {
 

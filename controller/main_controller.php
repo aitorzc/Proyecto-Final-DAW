@@ -13,14 +13,14 @@ if(isset($_SESSION['user'])){
     echo "logueado";
     $range = $_SESSION['user']->getRango();
     
-    if($range == 1){
+   
 
         require_once("model/sportList_model.php");
         require_once("view/management/index.php");
         //Recogemos lista de categorías
         $deportes = new sportList();
         $matrizDeportes = $deportes->getSportList();
-    }
+    
 
 }else{
     echo "no logueado";
