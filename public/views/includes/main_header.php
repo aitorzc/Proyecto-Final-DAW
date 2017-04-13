@@ -1,7 +1,7 @@
 <nav class="navbar">   
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
-            <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
+            <li><a id="btnMenu"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
             <li class="active"><a href="#">Inicio</a></li>
             <li><a href="#">Historial de Torneos</a></li>
             <li><a href="#">Información y Contacto</a></li>
@@ -32,8 +32,8 @@
             <li class="list-group-item">Deportes</li>
             <?php
                 // Lista de deportes
-                for ($i = 0; $i < count($matrizDeportes); $i++) {
-                    echo "<a href='#'>" . $matrizDeportes[$i]->getNombre() . "</a>";
+                foreach($allSports as $sport){
+                    echo $sport->Nombre;
                 }
             ?>
         </ul>
