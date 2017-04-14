@@ -1,6 +1,8 @@
 <?php
 
     class Connection{
+        
+        private static $con;
         // Conexión al servidor o en caso de error recoger el mensaje
         public static function connect(){
 
@@ -25,15 +27,14 @@
                 echo "Línea del error". $e->getLine();
 
             }
+            self::$con = $con;
 
             return $con;
         }
         // Desconexión del servidor
         public static function disconnect(){
 
-            $con = mysqli_connect("localhost", "root", "", "vidstofind");
-
-           $con->close();
+            self::$con->close();
 
         }        
 

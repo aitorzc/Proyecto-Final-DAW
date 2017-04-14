@@ -1,11 +1,18 @@
 <?php
 
-    class sport{
+    class Sport extends dbObject{
 
         private $id;
         private $nombre;
         private $descripcion;
-
+        
+        // Constructor
+        public function __construct() {
+            parent::__construct();
+            $this->setTable('deporte');
+        }
+        
+        // Setters y getters
         public function setId($id){
             $this->id = $id;
         }
@@ -26,7 +33,7 @@
         public function getDescripcion(){
             return $this->descripcion;
         }
-
+        
     }
 
 ?>

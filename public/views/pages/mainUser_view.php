@@ -2,6 +2,8 @@
 <html>
 
 <?php
+include_once('../../../config.php');
+
 //HEAD
 include_once(INCLUDES.DS.'main_head.php'); ?>    
     

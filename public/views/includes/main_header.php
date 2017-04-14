@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
             <li><a id="btnMenu"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="#">Historial de Torneos</a></li>
-            <li><a href="#">Información y Contacto</a></li>
+            <li class="active"><a href="?page=inicio">Inicio</a></li>
+            <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
+            <li><a href="?page=contacto">Información y Contacto</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <form class="navbar-form navbar-left">
@@ -31,9 +31,8 @@
             <a href='#'> 4rt ESO </a>
             <li class="list-group-item">Deportes</li>
             <?php
-                // Lista de deportes
                 foreach($allSports as $sport){
-                    echo $sport->Nombre;
+                    echo "<a href='#'>".$sport->Nombre."</a>";
                 }
             ?>
         </ul>

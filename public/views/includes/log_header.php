@@ -32,9 +32,8 @@
             <a href='#'> 4rt ESO </a>
             <li class="list-group-item">Deportes</li>
             <?php
-                // Lista de deportes
-                for ($i = 0; $i < count($matrizDeportes); $i++) {
-                    echo "<a href='#'>" . $matrizDeportes[$i]->getNombre() . "</a>";
+                foreach($allSports as $sport){
+                    echo "<a href='#'>".$sport->Nombre."</a>";
                 }
             ?>
         </ul>

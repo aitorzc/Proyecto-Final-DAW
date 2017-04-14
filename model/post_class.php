@@ -1,6 +1,6 @@
 <?php
-
-    class post{
+    //TODO: acabar clase
+    class post extends dbObject{
 
         private $id;
         private $nombre;

@@ -1,6 +1,6 @@
 <?php
 
-    class user{
+    class User extends dbObject{
         // Variables del usuario
         private $login;
         private $pswd;
@@ -9,9 +9,13 @@
         private $DNI;
         private $img;
         private $rango; 
+        
         // Constructor
-        public function __construct(){
+        public function __construct() {
+            parent::__construct();
+            $this->setTable('user');
         }
+        
         // Setters y getters
         public function setLogin($login){
             $this->login = $login;

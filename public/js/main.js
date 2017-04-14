@@ -1,24 +1,21 @@
-var btnMenu = document.getElementById("btnMenu");
-var sidenav = document.getElementById("sidenav");
-//Abrir el nav lateral
-function openSidenav(){
 
-    sidenav.style.width = "12vw";
-    btnMenu.firstChild.className = "glyphicon glyphicon-menu-left";
-    btnMenu.removeAttribute("onclick");
-    btnMenu.setAttribute("onclick", "closeSidenav()");
-    
-}
-//Cerrar el nav lateral
-function closeSidenav(){
-
-    sidenav.style.width = "0";
-    btnMenu.firstChild.className = "glyphicon glyphicon-menu-hamburger";
-    btnMenu.removeAttribute("onclick");
-    btnMenu.setAttribute("onclick",  "openSidenav()");
-
-}
 // Calendario para elegir fecha de torneo
-$(function () {
+/*$(function () {
     $('#datetimepicker').datetimepicker();
+});*/
+
+$(function() {
+    var btnMenu = $("#btnMenu");
+    var btnMenu2 = $("#btnMenu2");
+    var sidenav = $("#sidenav");
+    
+    btnMenu.click(function(){
+        if($("#btnMenu span:first").attr("class") == "glyphicon glyphicon-menu-hamburger"){
+            sidenav.css("width", "12vw"); 
+            $("#btnMenu span:first").attr("class", "glyphicon glyphicon-menu-left");
+        }else{
+            sidenav.css("width", "0");
+            $("#btnMenu span:first").attr("class", "glyphicon glyphicon-menu-hamburger");
+        }
+    });
 });

@@ -1,15 +1,14 @@
 <?php
 
-    class category{
-        // Variables de la categoria
+    class Category extends dbObject{
+        
         private $id;
         private $nombre;
 
         // Constructor
-        public function __construct(){
-
-           $this->id = null;
-
+        public function __construct() {
+            parent::__construct();
+            $this->setTable('categoria');
         }
 
         //Getters y setters

@@ -1,5 +1,5 @@
 body{
-    background-image: url("sport.jpeg");
+    background-image: url("../images/backgrounds/sport.jpeg");
 }
 .container-fluid{
     margin-left: 10vw;
@@ -48,7 +48,7 @@ body{
     border: 1px solid black;
 }
 #img1{
-    background-image: url("volleyball.jpg");
+    background-image: url("../images/backgrounds/volleyball.jpg");
     background-size: cover;
 }
 paddAll{
