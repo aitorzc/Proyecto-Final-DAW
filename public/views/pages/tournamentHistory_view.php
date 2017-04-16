@@ -14,7 +14,7 @@ include_once(INCLUDES.DS.'main_header.php');
 ?>
     
 <div class="container-fluid paddAll">
-    
+    <p>hola</p>
 </div>
 
 </body>

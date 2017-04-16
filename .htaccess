@@ -6,5 +6,15 @@
     RewriteCond %{REQUEST_FILENAME} !-d
 
     RewriteRule ^(.*)$ index.php?url=$1 [PT,L]
- 
+
+
+    #RewriteRule ^torneos/([a-zA-Z]+)$ index.php?page=$1
+
+    #   Home
+    RewriteRule ^inicio$ /index.php [L]
+
+    #   Producto
+    #   Entrada: producto/NOMBRE_PRODUCTO/
+    #   Salida: productos.php?id=NOMBRE_PRODUCTO
+    RewriteRule ^torneos/(.*)$  /index.php?page=$1 [L]
 </IfModule>

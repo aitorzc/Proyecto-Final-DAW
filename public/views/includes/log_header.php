@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">       
             <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="tournament_history">Historial de Torneos</a></li>
-            <li><a href="new_tournament">Nuevo torneo</a></li>
+            <li class="active"><a href="?page=inicio">Inicio</a></li>
+            <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
+            <li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>
             <li><p class="navbar-text">Bienvenido <?php echo $nombre ?></p></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

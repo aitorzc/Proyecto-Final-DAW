@@ -1,73 +1,36 @@
 <?php
+include_once MODEL.DS.'user_class.php';
+session_start();
 
-    include_once("model/userList_model.php");
-    include_once("model/user_class.php");
-    session_start();
-// Peticion de login
-    if (isset($_POST['sendLog'])) {
+$userLog = $_POST['nickLog'];
+$pswdLog = $_POST['pswdLog'];
 
-       checklogin();
+checklogin();
 
+function checkLogin(){
+
+    $user = new User();
+    $allUsers = $user->getAll();
+    $userNames = array();
+    
+    foreach($allUsers as $users){
+       array_push($userNames[$users['Login']], $users['Password']);
     }
-
-    function checkLogin(){
-
-        $userLog = $_POST['nickLog'];
-        $pswdLog = $_POST['pswdLog'];
-
-        $userList = new userList();
-
-        $message = "";
-            
-        $userResult = $userList->findUser($userLog);
-
-        if($userResult->getLogin() == $userLog){
-
-            if($userResult->getPswd() == $pswdLog){
-
-                $message = "Bienvenido ". $userLog;
-                echo $message;
-                loginAccess($userResult);
-            }
-            
-        }else{
-
-            $message = "Nick o password erroneos";
-            echo $message;
+    
+    if(array_key_exists($userLog, $userNames)){
+        if($userNames[$userLog] == $pswdLog){
+            loginAccess();
         }
-
     }
+}
 // Crear sesion para el nuevo usuario y comprobar su rango
-    function loginAccess($user){
+function loginAccess($user){
 
-         $_SESSION['user'] = $user;
+    $_SESSION['user'] = new User();
+    $_SESSION['user']->setLogin($userLog);
+    $_SESSION['user']->setPswd($pswdLog);
+    header('Location:'.ROOT.DS.'index.php');
+}
 
-         if (checkUserRange() == 2) {
-
-            header("Location: view/management");
-
-         }else{
-
-            header("Location: ./");
-
-         }
-         
-    }
-// Funcion para comprobar rango
-    function checkUserRange () {
-
-        if(isset($_SESSION['user'])){
-
-            if ($_SESSION['user']->getRango() == 1) {
-
-                return 1;
-
-            }else{
-
-                return 2;
-
-            }
-        }
-    }
 
 ?>
