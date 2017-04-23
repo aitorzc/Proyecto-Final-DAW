@@ -7,7 +7,7 @@ dbObject::setDbCon($dbConn);
 ob_start();
 
 if(isset($_GET['loginTry'])){
-    include_once CONTROLLER.DS.'login_controller';
+    include_once CONTROLLER.DS.'login_controller.php';
     echo "entra";
 }
 
@@ -23,6 +23,7 @@ $data = array(
     'sport'             => PAGES.DS.'sportInfo_view.php',
     'registro'          => PAGES.DS.'register_view.php',
     'nuevo_torneo'      => PAGES.DS.'newTournament_view.php',
+    'out'               => PAGES.DS.'logOut.php'
 );
 // Comprobación de paso por get
 if(empty($page) || !key_exists($page, $data)){
@@ -36,7 +37,8 @@ $allSports = $sports->getAll();
 
 foreach($data as $name => $url){
     if($page == $name){      
-        View::output($url);
+        //View::output($url);
+        require_once $url;
     }else{
         View::output(PAGES.DS.'mainVisitor_view.php');
     }

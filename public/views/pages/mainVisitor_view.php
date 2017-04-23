@@ -11,5 +11,9 @@ include_once(INCLUDES.DS.'main_header.php');
 ?>
 <div class="container-fluid paddAll">
 </div>
+<?php
+//FOOTER
+include_once(INCLUDES.DS.'main_footer.php'); 
+?>    
 </body>
 </html>

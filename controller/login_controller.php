@@ -5,32 +5,39 @@ session_start();
 $userLog = $_POST['nickLog'];
 $pswdLog = $_POST['pswdLog'];
 
-checklogin();
+checklogin($userLog, $pswdLog);
 
-function checkLogin(){
+function checkLogin($userLog, $pswdLog){
 
     $user = new User();
     $allUsers = $user->getAll();
     $userNames = array();
     
     foreach($allUsers as $users){
-       array_push($userNames[$users['Login']], $users['Password']);
+        $login = $users->Login;
+        $pass = $users->Password;
+        $userNames[$login] = $pass;
     }
     
     if(array_key_exists($userLog, $userNames)){
+        echo "existe usuario: ".$userLog."<br>";
         if($userNames[$userLog] == $pswdLog){
-            loginAccess();
+            echo "contraseña corecta: ".$pswdLog;
+            loginAccess($userLog, $pswdLog);
+        }else{
+            echo "dato incorrecto";
+            header('Location:'.ROOT.DS.'index.php?page=registro');
         }
+    }else{
+        echo "dato incorrecto";
+        header('Location:'.ROOT.DS.'index.php?page=registro');
     }
 }
 // Crear sesion para el nuevo usuario y comprobar su rango
-function loginAccess($user){
+function loginAccess($userLog, $pswdLog){
 
     $_SESSION['user'] = new User();
     $_SESSION['user']->setLogin($userLog);
     $_SESSION['user']->setPswd($pswdLog);
-    header('Location:'.ROOT.DS.'index.php');
+    header('Location:'.ROOT.DS.'index.php?page=inicio');
 }
-
-
-?>

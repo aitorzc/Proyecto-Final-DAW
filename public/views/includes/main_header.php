@@ -45,7 +45,8 @@ if(!isset($_SESSION['user'])){
 </div>
 <?php
 }else{
-//Header para usuarios logueados    
+//Header para usuarios logueados
+echo "estoy logueado";    
 ?>    
     <nav class="navbar">   
     <div class="container-fluid">
@@ -67,7 +68,7 @@ if(!isset($_SESSION['user'])){
                 </div>
             </div>
         </form>
-            <li><a href="view/register"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+            <li><a href="?page=out"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
         </ul>
     </div>    
 </nav>

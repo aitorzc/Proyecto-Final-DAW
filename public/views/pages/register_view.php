@@ -90,4 +90,8 @@ include_once(INCLUDES.DS.'register_head.php');
     </div>     
 </div>
 </body>
+<?php
+//FOOTER
+include_once(INCLUDES.DS.'main_footer.php'); 
+?>
 </html>

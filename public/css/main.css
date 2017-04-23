@@ -1,10 +1,13 @@
 body{
     background-image: url("../images/backgrounds/sport.jpeg");
+    background-attachment: fixed;
 }
 .container-fluid{
     margin-left: 10vw;
     margin-right: 10vw;
     background-color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 30px;
+    padding-bottom: 20px;
 }
 .sidenav {
     height: 100%;
@@ -48,7 +51,7 @@ body{
     border: 1px solid black;
 }
 #img1{
-    background-image: url("../images/backgrounds/volleyball.jpg");
+    background-image: url("../images/new_tournament/volleyball.jpg");
     background-size: cover;
 }
 paddAll{
