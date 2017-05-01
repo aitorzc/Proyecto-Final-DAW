@@ -1,6 +1,7 @@
 <?php
-include_once 'model/connect.php';
-include_once 'config.php';
-include_once 'model/dbObject.php';
-include_once 'model/view_class.php';
-include_once('controller/main_controller.php');
+include 'config.php';
+include 'functions.php';
+include 'model/connect.php';
+include 'model/dbObject.php';
+include 'model/view_class.php';
+include 'controller/main_controller.php';

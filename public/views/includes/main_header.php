@@ -46,29 +46,27 @@ if(!isset($_SESSION['user'])){
 <?php
 }else{
 //Header para usuarios logueados
-echo "estoy logueado";    
 ?>    
     <nav class="navbar">   
-    <div class="container-fluid">
+    <div class="container-fluid myBar">
         <ul class="nav navbar-nav">       
             <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
             <li class="active"><a href="?page=inicio">Inicio</a></li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
             <li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>
-            <li><p class="navbar-text">Bienvenido <?php echo $nombre ?></p></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-            <li><a href="?page=out"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+            <li>
+                <button id="profile" class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                    <?php echo "Hola,    ".$_SESSION['user']->getNombre()." ".$_SESSION['user']->getApellido(); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header">Acciones</li>
+                    <li><a href="?page=mi_perfil">Mi perfil</a></li>
+                    <li><a href="?page=registro">Salir</a></li>
+                </ul>
+            </li>
         </ul>
     </div>    
 </nav>

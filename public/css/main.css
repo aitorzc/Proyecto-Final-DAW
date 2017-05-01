@@ -1,6 +1,7 @@
 body{
     background-image: url("../images/backgrounds/sport.jpeg");
     background-attachment: fixed;
+    min-height: 90vh;
 }
 .container-fluid{
     margin-left: 10vw;
@@ -57,4 +58,18 @@ body{
 paddAll{
     padding-left:10px;
     padding-right:10px;
+}
+#profile{
+    font-size:14px;
+    cursor: pointer;
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+}
+#profile:hover{
+    background-color: #5b85de!important; 
+    transition: all 0.5s ease;
+}
+.myBar{
+    padding-left: 40px;
+    padding-right: 40px;
 }

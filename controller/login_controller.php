@@ -1,7 +1,4 @@
 <?php
-include_once MODEL.DS.'user_class.php';
-session_start();
-
 $userLog = $_POST['nickLog'];
 $pswdLog = $_POST['pswdLog'];
 
@@ -26,10 +23,10 @@ function checkLogin($userLog, $pswdLog){
             loginAccess($userLog, $pswdLog);
         }else{
             echo "dato incorrecto";
-            header('Location:'.ROOT.DS.'index.php?page=registro');
+            return false;
         }
     }else{
-        echo "dato incorrecto";
+        return false;
         header('Location:'.ROOT.DS.'index.php?page=registro');
     }
 }
@@ -39,5 +36,5 @@ function loginAccess($userLog, $pswdLog){
     $_SESSION['user'] = new User();
     $_SESSION['user']->setLogin($userLog);
     $_SESSION['user']->setPswd($pswdLog);
-    header('Location:'.ROOT.DS.'index.php?page=inicio');
+    return true;
 }

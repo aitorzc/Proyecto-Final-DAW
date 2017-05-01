@@ -25,7 +25,7 @@ abstract class dbObject {
     
     protected function insertRow(array $changes) {
         
-        $consulta = "INSERT INTO {$this->getTableName()} (" . implode(',', array_keys($changes)) . ") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
+        $consulta = "INSERT INTO {$this->getTableName()} VALUES (" . "'" . implode("','", $changes) . "'" . ");";
 
         if ($this->db->query($consulta) === true) {
             echo "insertado correctamente.";
@@ -60,7 +60,17 @@ abstract class dbObject {
             echo "Error actualizando: " . $this->db->error;
         }
     }
-
+    
+    public function selectWhere(array $select, $where) {
+        $consulta = $this->db->query("SELECT ".implode(', ', $select)." FROM {$this->getTableName()} WHERE {$where}");
+        $list = array();
+        
+        while ($obj = $consulta->fetch_object(get_class($this))) {
+            array_push($list, $obj);
+        }
+        return $list;
+    }
+    
     public function getAll() {
 
         $consulta = $this->db->query("SELECT * FROM {$this->getTableName()}");

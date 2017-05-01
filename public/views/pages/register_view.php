@@ -13,7 +13,7 @@ include_once(INCLUDES.DS.'register_head.php');
         </ul>
         <div class="tab-content">
             <div id="entrar" class="tab-pane fade in active">
-                <form action="?loginTry=TRUE" method="POST" class="form-horizontal">
+                <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal">
                     <div class="form-group">
                         <label class="control-label col-sm-2">Nick:</label>
                         <div class="col-sm-8">
@@ -28,7 +28,14 @@ include_once(INCLUDES.DS.'register_head.php');
                     </div>
                     <div class="form-group">        
                         <div class="col-sm-offset-2 col-sm-8">
-                            <button type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">Entrar</button>
+                            <input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">
+                            <?php
+                            if(isset($_GET['tryLog'])){
+                                if(!$_GET['tryLog']){
+                                    echo '<span style="font-size:14px" class="label label-danger">Usuario o contraseña incorrectos</span>';
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </form>
