@@ -36,7 +36,7 @@ if(!isset($_SESSION['user'])){
             <li class="list-group-item">Deportes</li>
             <?php
                 foreach($allSports as $sport){
-                    echo "<a href='#'>".$sport->Nombre."</a>";
+                    echo "<a href='#'>".$sport->getNombre()."</a>";
                 }
             ?>
         </ul>
@@ -53,17 +53,23 @@ if(!isset($_SESSION['user'])){
             <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
             <li class="active"><a href="?page=inicio">Inicio</a></li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
-            <li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>
+            <li><a href="?page=mi_perfil">Mi perfil</a></li>
+            <?php
+                if($_SESSION['user']->getRango_fk() == 2){
+                    echo '<li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>';
+                }
+            ?>        
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <button id="profile" class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
-                    <?php echo "Hola,    ".$_SESSION['user']->getNombre()." ".$_SESSION['user']->getApellido(); ?>
+                    <?php echo "Hola,    ".$_SESSION['student']->getNombre()." ".$_SESSION['student']->getApellido(); ?>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li class="dropdown-header">Acciones</li>
                     <li><a href="?page=mi_perfil">Mi perfil</a></li>
+                    <li><a href="?page=mi_clase">Mi clase</a></li>
                     <li><a href="?page=registro">Salir</a></li>
                 </ul>
             </li>
@@ -81,7 +87,7 @@ if(!isset($_SESSION['user'])){
             <li class="list-group-item">Deportes</li>
             <?php
                 foreach($allSports as $sport){
-                    echo "<a href='#'>".$sport->Nombre."</a>";
+                    echo "<a href='#'>".$sport->getNombre()."</a>";
                 }
             ?>
         </ul>

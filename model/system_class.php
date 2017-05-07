@@ -1,23 +1,20 @@
 <?php
 
-    class Sport extends dbObject{
-
-        private $IdDeporte;
+    class System extends dbObject{
+        // Variables del usuario
+        private $IdSistema;
         private $Nombre;
         private $Descripcion;
         
         // Constructor
         public function __construct() {
             parent::__construct();
-            $this->setTable('deporte');
+            $this->setTable('sistema');
         }
         
         // Setters y getters
-        public function setId($IdDeporte){
-            $this->IdDeporte = $IdDeporte;
-        }
-        public function getId(){
-            return $this->IdDeporte;
+        function getIdSistema() {
+            return $this->IdSistema;
         }
 
         function getNombre() {
@@ -28,6 +25,10 @@
             return $this->Descripcion;
         }
 
+        function setIdSistema($IdSistema) {
+            $this->IdSistema = $IdSistema;
+        }
+
         function setNombre($Nombre) {
             $this->Nombre = $Nombre;
         }
@@ -35,4 +36,10 @@
         function setDescripcion($Descripcion) {
             $this->Descripcion = $Descripcion;
         }
+
+        public function save(array $values){
+            return $this->insertRow($values);
+        }
     }
+
+?>

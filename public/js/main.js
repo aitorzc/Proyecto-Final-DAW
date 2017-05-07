@@ -1,9 +1,3 @@
-
-// Calendario para elegir fecha de torneo
-/*$(function () {
-    $('#datetimepicker').datetimepicker();
-});*/
-
 $(function() {
     var btnMenu = $("#btnMenu");
     var btnMenu2 = $("#btnMenu2");
@@ -18,10 +12,108 @@ $(function() {
             $("#btnMenu span:first").attr("class", "glyphicon glyphicon-menu-hamburger");
         }
     });
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//MODIFICAR PERFIL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
 
+// Funcion para poder editar perfil
+    $('#btnEditProfile').click(function(){
+        // Visibilizar iconos, inputs, botones para editar perfil
+        $('.editEmail').toggle();
+        $('.editPasswd').toggle();
+        $('#btnSaveProfile').toggle();
+        $('#btnCancelProfile').toggle();
+        $('#btnEditProfile').toggle();
+        // Funciones editar imagen
+        $('.imgContainer').mouseover(function(){
+            $('#imgProfile').css('opacity', '0.7');
+            $('#fadeEffect').css('opacity', '1');
+        });
+        $('.imgContainer').mouseout(function(){
+            $('#imgProfile').css('opacity', '1');
+            $('#fadeEffect').css('opacity', '0');
+        });
+    });
+    
+    // Funcion para cancelar editar perfil
+    $('#btnCancelProfile').click(function(){
+        // Visibilizar iconos, inputs, botones para editar perfil
+        $('.editEmail').toggle();
+        $('.editPasswd').toggle();
+        $('#btnSaveProfile').toggle();
+        $('#btnCancelProfile').toggle();
+        $('#btnEditProfile').toggle();
+        // Funciones editar imagen
+        $('.imgContainer').mouseover(function(){
+            $('#imgProfile').css('opacity', '0.7');
+            $('#fadeEffect').css('opacity', '1');
+        });
+        $('.imgContainer').mouseout(function(){
+            $('#imgProfile').css('opacity', '1');
+            $('#fadeEffect').css('opacity', '0');
+        });
+        $('.editPasswd').val("");
+        $('.editEmail').val($('.editEmail').val());
+    });
+    
+    // Funcion guardar perfil
+    $('#btnSaveProfile').click(function(){
+        var message = "";
+        var throwMessage = false;
+        // Comprobar contraseña
+        var pswdRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,20}$/;
+        
+        if(pswdRegex.test($('#cambiarPswd').val())) {
+            console.log("bien");
+            console.log($('#cambiarPswd').val());
+        }else{
+            message+="La contraseña debe tener almenos una letra mínuscula, una máyuscula, contener un numero.\n";
+            throwMessage = true;
+        }
+        // Comprobar email
+        var emailRegex = /^.+\@.+\.[a-z]{2,}$/;
+        
+        if(emailRegex.test($('#cambiarEmail').val())) {
+            console.log("bien");
+            console.log($('#cambiarEmail').val());
+        }else{
+           message+="¡El correo debe ser valido!\n";
+           throwMessage = true;
+        }
+        
+        if(throwMessage == false){
+            alert("Guardado");
+        }else{
+            alert(message);
+        }
+        // TODO: Comprobar imagen
+    });
+    
+    //Comprobar contraseña
+    $('#checkPswd').click(function(){
+        var pswdRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,20}$/;
+        if (pswd.value.length != 0 && !(pswdRegex.test(pswd.value))) {
+            return true
+        }
+    });
+    // Efecto para ver contraseña
+    $('#verPswd').mousedown(function(){
+        $('#cambiarPswd').attr("type", "text");
+        $('#verPswd').attr("background-color", "blue");
+    });
+    $('#verPswd').mouseup(function(){
+        $('#cambiarPswd').attr("type", "password");
+    });
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CREAR TORNEO
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    
     $('#elegirCurso').change(function(){
-        //TODO: Arreglas funcion elegir curso y mostrar alumnos
+        //TODO: Arreglar funcion elegir curso y mostrar alumnos
         var pos = $('#elegirCurso').val();
+        console.log($('#elegirCurso').val());
 //        if($('.players').eq(0).attr("display") != "none"){
 //            $('.players').eq(0).toggle();
 //        }else if($('.players').eq(1).attr("display") != "none"){
@@ -33,7 +125,6 @@ $(function() {
 //        }
         $('players').attr("display", "none");
         $('.players').eq(pos).toggle(200);
-        console.log($('.players'));
     });
 //    $('#players').change(function(){
 //        
@@ -80,7 +171,4 @@ $(function() {
         }
     });
     $('#profile').popover();
-    $('#editProfile').click(function(){
-        $('#editEmail').toggle();
-    });
 });

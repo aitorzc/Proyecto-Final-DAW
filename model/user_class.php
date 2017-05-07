@@ -2,83 +2,47 @@
 
     class User extends dbObject{
         // Variables del usuario
-        private $login;
-        private $pswd;
-        private $email;
-        private $nombre;
-        private $apellido;
-        private $curso;
-        private $img;
-        private $rango; 
-        private $permiso;
+        private $Login;
+        private $Password;
+        private $Avatar;
+        private $Rango_fk; 
         // Constructor
         public function __construct() {
             parent::__construct();
-            $this->setTable('user');
+            $this->setTable('usuario');
         }
         
         // Setters y getters
-        public function setLogin($login){
-            $this->login = $login;
-        }
-        public function getLogin(){
-            return $this->login;
+        function getLogin() {
+            return $this->Login;
         }
 
-        public function setPswd($pswd){
-            $this->pswd = $pswd;
-        }
-        public function getPswd(){
-            return $this->pswd;
+        function getPassword() {
+            return $this->Password;
         }
 
-        public function setEmail($email){
-            $this->email = $email;
-        }
-        public function getEmail(){
-            return $this->email;
+        function getAvatar() {
+            return $this->Avatar;
         }
 
-        public function setNombre($nombre){
-            $this->nombre = $nombre;
-        }
-        public function getNombre(){
-            return $this->nombre;
-        }
-        
-        function getApellido() {
-            return $this->apellido;
-        }
-        function setApellido($apellido) {
-            $this->apellido = $apellido;
+        function getRango_fk() {
+            return $this->Rango_fk;
         }
 
-        public function setCurso($curso){
-            $this->curso = $curso;
-        }
-        public function getCurso(){
-            return $this->curso;
+        function setLogin($Login) {
+            $this->Login = $Login;
         }
 
-        public function setImg($img){
-            $this->img = $img;
-        }
-        public function getImg(){
-            return $this->img;
+        function setPassword($Password) {
+            $this->Password = $Password;
         }
 
-        public function setRango($rango){
-            $this->rango = $rango;
+        function setAvatar($Avatar) {
+            $this->Avatar = $Avatar;
         }
-        public function getRango(){
-            return $this->rango;
-        }
-        
-        function getPermiso() {
-            return $this->permiso;
-        }
-        function setPermiso($permiso) {
-            $this->permiso = $permiso;
+
+        function setRango_fk($Rango_fk) {
+            $this->Rango_fk = $Rango_fk;
         }
 
         public function save(array $values){

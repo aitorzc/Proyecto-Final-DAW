@@ -1,15 +1,13 @@
 <?php
-require_once MODEL.DS."sport_class.php";
-require_once MODEL.DS."category_class.php";
-include_once MODEL.DS.'user_class.php';
-
 //Conexión a la base de datos
 $dbConn = Connection::connect();
 dbObject::setDbCon($dbConn);
+
 session_start();
+/*
 if(isset($_GET['crearTorneo'])){
     echo "torneo creado<br>";
-}
+}*/
 if(isset($_GET['tryLog'])){
     $userLog = $_POST['nickLog'];
     $pswdLog = $_POST['pswdLog'];
@@ -35,7 +33,8 @@ $data = array(
     'registro'          => PAGES.DS.'register_view.php',
     'nuevo_torneo'      => PAGES.DS.'newTournament_view.php',
     'out'               => PAGES.DS.'logOut.php',
-    'mi_perfil'         => PAGES.DS.'myProfile_view.php'
+    'mi_perfil'         => PAGES.DS.'myProfile_view.php',
+    'mi_clase'         => PAGES.DS.'myClass_view.php'
 );
 // Comprobación de paso por get
 if(empty($page) || !key_exists($page, $data)){
@@ -47,7 +46,13 @@ $allSports = $sports->getAll();
 //Recogemos lista de categorías
 $categories = new Category();
 $allCategs = $categories->getAll();
-//Alumnos permitidos
+//Recogemos lista de cursos
+$courses = new Course();
+$allCourses = $courses->getAll();
+//Recogemos lista de estudiantes
+$students = new Student();
+$allStudents = $students->getAll();
+/*//Alumnos permitidos
 $allowedUsers = new User();
 $arrAllowedUsers =$allowedUsers->getAll();
 $alumnos1 = array();
@@ -68,7 +73,7 @@ foreach ($arrAllowedUsers as $user){
     if($user->Permiso == 1 && $user->Curso == 4){
         array_push($alumnos4, $user->Nombre);
     }
-}
+}*/
 foreach($data as $name => $url){
     if($page == $name){   
         //Función para que el output de html no se acumule

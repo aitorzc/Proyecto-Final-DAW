@@ -2,28 +2,43 @@
 
     class Category extends dbObject{
         
-        private $nombre;
-        private $descripcion;
+        private $IdSistema;
+        private $Nombre;
+        private $Descripcion;
 
         // Constructor
         public function __construct() {
             parent::__construct();
-            $this->setTable('sistema_deportes');
+            $this->setTable('sistema');
         }
 
         //Getters y setters
-        public function setNombre($nombre){
-            $this->nombre = $nombre;
-        }
-        public function getNombre(){
-            return $this->id;
+        function getIdSistema() {
+            return $this->IdSistema;
         }
 
-        public function setDescripcion($descripcion){
-            $this->descripcion = $descripcion;
+        function getNombre() {
+            return $this->Nombre;
         }
-        public function getDescripcion(){
-            return $this->descripcion;
+
+        function getDescripcion() {
+            return $this->Descripcion;
+        }
+
+        function setIdSistema($IdSistema) {
+            $this->IdSistema = $IdSistema;
+        }
+
+        function setNombre($Nombre) {
+            $this->Nombre = $Nombre;
+        }
+
+        function setDescripcion($Descripcion) {
+            $this->Descripcion = $Descripcion;
+        }
+
+        public function save(array $values){
+            return $this->insertRow($values);
         }
 
     }

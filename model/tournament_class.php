@@ -3,11 +3,12 @@
 
 class Tournament extends dbObject{    
     
-    private $id;
-    private $nombre;
-    private $idDeporte;
-    private $nParticipantes;
-    private $fecha;
+    private $IdTorneo;
+    private $Nombre;
+    private $IdDeporte_fk;
+    private $IdSistema_fk;
+    private $numParticipantes;
+    private $Fecha;
     
     // Constructor
     public function __construct() {
@@ -16,42 +17,56 @@ class Tournament extends dbObject{
     }
     
     // Setters y getters   
-    function getId() {
-        return $this->id;
+    function getIdTorneo() {
+        return $this->IdTorneo;
     }
 
     function getNombre() {
-        return $this->nombre;
+        return $this->Nombre;
     }
 
-    function getIdDeporte() {
-        return $this->idDeporte;
+    function getIdDeporte_fk() {
+        return $this->IdDeporte_fk;
     }
 
-    function getNParticipantes() {
-        return $this->nParticipantes;
+    function getIdSistema_fk() {
+        return $this->IdSistema_fk;
+    }
+
+    function getNumParticipantes() {
+        return $this->numParticipantes;
     }
 
     function getFecha() {
-        return $this->fecha;
+        return $this->Fecha;
     }
 
-    function setNombre($nombre) {
-        $this->nombre = $nombre;
+    function setIdTorneo($IdTorneo) {
+        $this->IdTorneo = $IdTorneo;
     }
 
-    function setIdDeporte($idDeporte) {
-        $this->idDeporte = $idDeporte;
+    function setNombre($Nombre) {
+        $this->Nombre = $Nombre;
     }
 
-    function setNParticipantes($nParticipantes) {
-        $this->nParticipantes = $nParticipantes;
+    function setIdDeporte_fk($IdDeporte_fk) {
+        $this->IdDeporte_fk = $IdDeporte_fk;
     }
 
-    function setFecha($fecha) {
-        $this->fecha = $fecha;
+    function setIdSistema_fk($IdSistema_fk) {
+        $this->IdSistema_fk = $IdSistema_fk;
     }
 
-    
-    
+    function setNumParticipantes($numParticipantes) {
+        $this->numParticipantes = $numParticipantes;
+    }
+
+    function setFecha($Fecha) {
+        $this->Fecha = $Fecha;
+    }
+
+    public function save(array $values){
+        return $this->insertRow($values);
+    }
+
 }
