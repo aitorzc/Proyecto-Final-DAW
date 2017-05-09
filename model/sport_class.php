@@ -35,4 +35,12 @@
         function setDescripcion($Descripcion) {
             $this->Descripcion = $Descripcion;
         }
+        
+        public function save(){
+            $values = array(
+                'Nombre'        => $this->getNombre(),
+                'Descripcion'   => $this->getDescripcion()
+            );
+            return $this->insertRow($values);
+        }
     }

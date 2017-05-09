@@ -37,8 +37,11 @@
             $this->IdTorneo_fk = $IdTorneo_fk;
         }
 
-        
-        public function save(array $values){
+        public function save(){
+            $values = array(
+                'IdTorneo_fk'  => $this->getIdTorneo_fk(),
+                'Nombre'       => $this->getNombre()
+            );
             return $this->insertRow($values);
         }
     }

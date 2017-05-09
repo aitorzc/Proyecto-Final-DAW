@@ -28,7 +28,11 @@
             $this->IdRonda_fk = $IdRonda_fk;
         }
 
-        public function save(array $values){
+        public function save(){
+            $values = array(
+                'IdEquipo_fk'  => $this->getIdEquipo_fk(),
+                'IdRonda_fk'   => $this->getIdRonda_fk()
+            );
             return $this->insertRow($values);
         }
     }

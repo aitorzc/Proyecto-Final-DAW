@@ -28,9 +28,9 @@ abstract class dbObject {
         $consulta = "INSERT INTO {$this->getTableName()} VALUES (" . "'" . implode("','", $changes) . "'" . ");";
 
         if ($this->db->query($consulta) === true) {
-            echo "insertado correctamente.";
+            return true;
         } else {
-            echo "Error insertando: " . $this->db->error;
+            return false;
         }
     }
 
@@ -70,7 +70,15 @@ abstract class dbObject {
         }
         return $list;
     }
-    
+    public function selectAdd($select, $add) {
+        $consulta = $this->db->query("SELECT ".implode(', ', $select)." FROM {$this->getTableName()} {$where}");
+        $list = array();
+        
+        while ($obj = $consulta->fetch_object(get_class($this))) {
+            array_push($list, $obj);
+        }
+        return $list;
+    }
     public function getAll() {
 
         $consulta = $this->db->query("SELECT * FROM {$this->getTableName()}");

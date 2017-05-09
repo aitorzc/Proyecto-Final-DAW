@@ -8,7 +8,7 @@
         <?php
 //HEADER
         include_once(INCLUDES . DS . 'main_header.php');
-        if(!isset($_GET['crearTorneo'])){
+        if(!isset($_GET['crearTorneo']) && !isset($_GET['torneoCreado'])){
         ?>
         <div class="container-fluid paddAll">
             <h2 class="text-center">Nuevo torneo</h2>
@@ -16,6 +16,12 @@
                 <div class="row">
                     <div class="form-group ">
                         <h3>Paso 1: ¿Qué vamos a jugar?</h3>
+                        
+                        <!--Elegir el nombre del torneo-->
+                        
+                        <div class="col-xs-3 col-sm-3"> 
+                            <input class="form-control selectpicker" placeholder="Elige un nombre para el torneo" type="text" name="nameTournament">
+                        </div>
 
                         <!--Elegir deporte para el torneo-->
                         
@@ -25,21 +31,7 @@
                                 <?php
                                 // Lista de deportes
                                 foreach ($allSports as $sport) {
-                                    echo "<option value='".$sport->getNombre()."'>" . $sport->getNombre() . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-
-                        <!--Elegir el modo de juego para el torneo-->
-                        
-                        <div class="col-xs-3 col-sm-3"> 
-                            <select name="gameMode" class="form-control selectpicker">
-                                <option value="0" disabled selected hidden>Elige tipo de torneo</option>
-                                <?php
-                                // Lista de categorías
-                                foreach ($allCategs as $category) {
-                                    echo "<option value='".$category->getNombre()."'>" .$category->getNombre(). "</option>";
+                                    echo "<option value='".$sport->getId().",".$sport->getNombre()."'>".$sport->getNombre()."</option>";
                                 }
                                 ?>
                             </select>
@@ -84,7 +76,7 @@
                                 <?php
                                 foreach ($allStudents as $stud){
                                     if($stud->getCurso_fk() == 1){
-                                        echo '<option value="' .$stud->getNombre(). '">'.$stud->getNombre(). '</option>';
+                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">'.$stud->getNombre(). '</option>';
                                     }
                                 }
                                 ?>
@@ -95,7 +87,7 @@
                                 <?php
                                 foreach ($allStudents as $stud){
                                     if($stud->getCurso_fk() == 2){
-                                        echo '<option value="' .$stud->getNombre() . '">' .$stud->getNombre(). '</option>';
+                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
                                     }
                                 }
                                 ?>
@@ -107,7 +99,7 @@
                                 <?php
                                 foreach ($allStudents as $stud){
                                     if($stud->getCurso_fk() == 3){
-                                        echo '<option value="' .$stud->getNombre() . '">' .$stud->getNombre(). '</option>';
+                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
                                     }
                                 }
                                 ?>
@@ -119,7 +111,7 @@
                                 <?php
                                 foreach ($allStudents as $stud){
                                     if($stud->getCurso_fk() == 4){
-                                        echo '<option value="' .$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
+                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
                                     }
                                 }
                                 ?>
@@ -174,13 +166,17 @@
         </div>        
         <?php
         }else{    
-            $deporte = $_POST['sportName'];
-            $tipo = $_POST['gameMode'];
+            
+            $nombre = $_POST['nameTournament'];
+            
+            $arrDeporte = explode(",", $_POST['sportName']);
+            $idDeporte = $arrDeporte[0];
+            $deporte = $arrDeporte[1];
+            
             $agrup = $_POST['gameType'];
             $clase = $_POST['players'];
             $fecha = $_POST['selDate'];
             $comentario = $_POST['comment'];
-            
             
             if($agrup == 'Individial'){
                 
@@ -188,42 +184,112 @@
                 $teams = generateTeams($clase);
                 $teamA = $teams[0];
                 $teamB = $teams[1];
-                echo "Equipo 1: ";
-                foreach($teamA as $a){
-                    echo $a."-";
-                }
-                echo "<br>Equipo 2: ";
-                foreach($teamB as $b){
-                    echo $b."-";
-                }
             }
-            echo "<br>Fecha: ".$fecha."<br>";
-            echo "Comentario: ".$comentario."<br>";
         ?>
-        <div class="col-md-4 text-center">
+        <div class="container-fluid paddAll">
+           <div class="col-md-offset-4 col-md-4 text-center">
                     <div class="panel panel-info panel-pricing">
                         <div class="panel-heading">
                             <i class="fa fa-desktop"></i>
-                            <input type="text" placeholder="Nombre torneo..." name="nameTournament">
+                            <h4><?php echo $nombre; ?></h4>
                         </div>
                         <div class="panel-body text-center">
-                            <p><strong></strong></p>
+                            <p><strong><?php echo $deporte; ?></strong></p>
                         </div>
                         <ul class="list-group text-center">
                             <?php
-                            echo "<li class='list-group-item'>Deporte: ".$deporte."</li>";
-                            echo "<li class='list-group-item'>Modo de juego: ".$tipo." ".$agrup."</li>";
+                            echo "<li class='list-group-item'>Modo de juego: <b>".$agrup."</b></li>";
+                            echo "<li class='list-group-item'>Fecha: <b>".$fecha." a las 09:00h</b></li>";
+                            echo "<li class='list-group-item'>Equipo 1: ";
+                            if($agrup != 'Individial'){
+                                $namesA = "";
+                                foreach($teamA as $a){
+                                    $namesA .= $a.", ";
+                                }
+                                echo substr($namesA, 0, strlen($namesA)-2);
+                                echo "</li>";
+                                $namesB = "";
+                                echo "<li class='list-group-item'>Equipo 2: ";
+                                foreach($teamB as $b){
+                                    $namesB.= $b.", ";
+                                }
+                                echo substr($namesB, 0, strlen($namesB)-2);
+                            }else{
+                                echo "<li class='list-group-item'>Jugadores: ";
+                            }
+                            echo "</li>";
+                            echo "<li class='list-group-item'>Comentario: <b>".$comentario."</b></li>";
                             ?>
-                            <li class='list-group-item'></li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
                         </ul>
                         <div class="panel-footer">
-                            <a class="btn btn-lg btn-block btn-primary" href="#">Crear torneo</a>
+                            <form action="?page=nuevo_torneo&torneoCreado=true" method="POST">
+                                <input type="submit" class="btn btn-lg btn-block btn-primary" value="Crear torneo" name="crearTorneo" href="#">
+                            </form>
                         </div>
                     </div>
-                </div>
+                </div> 
+        </div>
+        
         <?php
+        
+        if(isset($_POST['crearTorneo'])){
+            //Creat torneo a table torneo
+            $torneo = new Tournament();
+            $torneo->setNombre($nombre);
+            $torneo->setIdDeporte_fk($idDeporte);
+            $torneo->setIdSistema_fk();
+            $torneo->setNumParticipantes(count($clase));
+            $torneo->setFecha($fecha." 09:00:00");
+            if($torneo->save()){
+                $torneo->selectAdd('IdTorneo', 'WHERE NumParticipantes = "'.$torneo->getNumParticipantes().'" ORDER BY IdTorneo DESC LIMIT 1');
+                echo "bien";
+            }else{
+                echo "mal";
+            }
+        }
+        
+        
+//        //Crear equipos tabla equipo
+//        $equipoA = new Team();
+//        $equipoA->setNombre(returnName());
+//        $equipoA->setIdTorneo_fk($torneo->getIdTorneo());
+//        if($equipoA->save()){
+//            $equipoA->selectAdd('IdEquipo', 'WHERE Nombre = "'.$equipoA->getNombre().'" AND IdTorneo_fk = "'.$equipoA->getNombre().'" ORDER BY IdTorneo DESC LIMIT 1');
+//        }
+//        
+//        $equipoB = new Team();
+//        $equipoB->setNombre(returnName());
+//        $equipoB->setIdTorneo_fk($torneo->getIdTorneo());
+//        if($equipoB->save()){
+//            $equipoB->selectAdd('IdEquipo', 'WHERE Nombre = "'.$equipoB->getNombre().'" AND IdTorneo_fk = "'.$equipoB->getNombre().'" ORDER BY IdTorneo DESC LIMIT 1');
+//        }
+//        
+//        //Crear relaciones equipo-alumno table equipo_alumno
+//        foreach($teamA as $idA => $aVal){
+//            $equipo_alumno = new Team_student();
+//            $equipo_alumno->setIdEquipo_fk($equipoA->getIdEquipo());
+//            $equipo_alumno->setIdAlumno_fk($idA);
+//            $equipo_alumno->save();
+//        }
+//        
+//        foreach($teamB as $idB => $bVal){
+//            $equipo_alumno = new Team_student();
+//            $equipo_alumno->setIdEquipo_fk($equipoB->getIdEquipo());
+//            $equipo_alumno->setIdAlumno_fk($idB);
+//            $equipo_alumno->save();
+//        }
+        
+        
+//        $ronda = new Round();
+//        $ronda->setIdTorneo_fk($torneo->getIdTorneo());
+//        $ronda->setRonda($Ronda);
+//        
+//        $equipo_ronda = new Team_round();
+//        $equipo_ronda->setIdEquipo_fk($IdEquipo_fk);
+//        $equipo_ronda->setIdRonda_fk($IdRonda_fk);
+        
+        
+        
         }
         
         //FOOTER

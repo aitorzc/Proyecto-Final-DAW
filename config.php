@@ -1,5 +1,11 @@
 <?php
+// Valores conexión DB
+define('SERVER', 'localhost');
+define('USER', 'root');
+define('PASS', '');
+define('DB', 'torneos');
 
+//Rutas completas
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 

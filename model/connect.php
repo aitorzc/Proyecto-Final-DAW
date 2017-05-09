@@ -8,7 +8,7 @@
 
             try{
 
-                $con = mysqli_connect("localhost", "root", "", "vidstofind");
+                $con = mysqli_connect(SERVER, USER, PASS, DB);
 
                 $con->set_charset("UTF-8");
 

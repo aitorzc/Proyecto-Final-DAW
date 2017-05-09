@@ -65,7 +65,13 @@ class Tournament extends dbObject{
         $this->Fecha = $Fecha;
     }
 
-    public function save(array $values){
+    public function save(){
+        $values = array(
+            'Nombre'            => $this->getNombre(),
+            'IdDeporte_fk'      => $this->getIdDeporte_fk(),
+            'IdSistema_fk'      => $this->getIdSistema_fk(),
+            'NumParticipantes'  => $this->getNumParticipantes()
+        );
         return $this->insertRow($values);
     }
 

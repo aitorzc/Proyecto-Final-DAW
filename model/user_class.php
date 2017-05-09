@@ -45,7 +45,13 @@
             $this->Rango_fk = $Rango_fk;
         }
 
-        public function save(array $values){
+        public function save(){
+            $values = array(
+                'Login'      => $this->getLogin(),
+                'Password'   => $this->getPassword(),
+                'Avatar'     => $this->getAvatar(),
+                'Rango_fk'   => $this->getRango_fk()
+            );
             return $this->insertRow($values);
         }
     }

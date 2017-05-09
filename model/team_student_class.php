@@ -29,7 +29,11 @@
         }
 
         
-        public function save(array $values){
+        public function save(){
+            $values = array(
+                'IdAlumno_fk'   => $this->getIdAlumno_fk(),
+                'IdEquipo_fk'   => $this->getIdEquipo_fk()
+            );
             return $this->insertRow($values);
         }
     }

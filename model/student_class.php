@@ -73,7 +73,14 @@
             $this->Permiso = $Permiso;
         }
 
-        public function save(array $values){
+        public function save(){
+            $values = array(
+                'Nombre'     => $this->getNombre(),
+                'Apellido'   => $this->getApellido(),
+                'Email'      => $this->getEmail(),
+                'Usuario_fk' => $this->getUsuario_fk(),
+                'Permiso'    => $this->getPermiso()
+            );
             return $this->insertRow($values);
         }
     }

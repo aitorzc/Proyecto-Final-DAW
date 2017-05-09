@@ -140,7 +140,7 @@ $(function() {
 
     $('#sendNewTourn').click(function(){
         
-        var ok = true;
+        ok = true;
         message = "";
         dateCheck = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
         
@@ -148,9 +148,9 @@ $(function() {
             ok = false;
             message+= "Elige un deporte\n";
         }
-        if($('select[name="gameMode"]').val() == null){
+        if($('input[name="nameTournament"]').val() == null){
             ok = false;
-            message+= "Elige un modo de juego\n";
+            message+= "Elige un nombre para el torneo\n";
         }
         if($('select[name="gameType"]').val() == null){
             ok = false;
