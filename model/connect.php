@@ -10,7 +10,7 @@
 
                 $con = mysqli_connect(SERVER, USER, PASS, DB);
 
-                $con->set_charset("UTF-8");
+                $con->set_charset("utf8");
 
                 if ($con->connect_errno) {
 

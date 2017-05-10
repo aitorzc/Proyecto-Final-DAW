@@ -39,7 +39,7 @@ function generateTeams(array $studentsVals){
 function returnName(){
     $defaultNames = array('Alpha','Beta','Gamma','Delta','Epsilon','Digamma','Stigma','Zeta','Heta','Eta','Theta','Iota','Yot','Kappa','Lamda','Mu','Nu','Xi','Omicron','Pi','San','Koppa','Rho','Sigma','Tau','Upsilon','Phi','Chi','Psi','Omega','Sampi','Sho');
     shuffle($defaultNames);
-    return $defaultNames;
+    return $defaultNames[0];
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE AYUDA

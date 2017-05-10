@@ -9,7 +9,7 @@ class Tournament extends dbObject{
     private $IdSistema_fk;
     private $numParticipantes;
     private $Fecha;
-    
+    private $Comentario;
     // Constructor
     public function __construct() {
         parent::__construct();
@@ -64,13 +64,22 @@ class Tournament extends dbObject{
     function setFecha($Fecha) {
         $this->Fecha = $Fecha;
     }
+    
+    function setComentario($comentario){
+        $this->Comentario = $comentario;
+    }
+    
+    function getComentario(){
+        return $this->Comentario;
+    }
 
     public function save(){
         $values = array(
             'Nombre'            => $this->getNombre(),
             'IdDeporte_fk'      => $this->getIdDeporte_fk(),
-            'IdSistema_fk'      => $this->getIdSistema_fk(),
-            'NumParticipantes'  => $this->getNumParticipantes()
+            'NumParticipantes'  => $this->getNumParticipantes(),
+            'Fecha'             => $this->getFecha(),
+            'Comentario'        => $this->getComentario()
         );
         return $this->insertRow($values);
     }

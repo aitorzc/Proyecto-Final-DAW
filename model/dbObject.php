@@ -24,12 +24,18 @@ abstract class dbObject {
     }
     
     protected function insertRow(array $changes) {
-        
-        $consulta = "INSERT INTO {$this->getTableName()} VALUES (" . "'" . implode("','", $changes) . "'" . ");";
+        echo "INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
+        $consulta = "INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
 
         if ($this->db->query($consulta) === true) {
-            return true;
-        } else {
+            if($this->db->insert_id){
+                return $this->db->insert_id;
+                echo "insertado correctamente";
+            }else{
+                return true;
+            }
+        }else{
+            echo "error al insertar: ".$this->db->error;
             return false;
         }
     }
