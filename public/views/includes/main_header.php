@@ -2,27 +2,27 @@
 if(!isset($_SESSION['user'])){
 //Header para usuarios no logueados
 ?>
-<nav class="navbar">   
-    <div class="container-fluid">
+<nav class="navbar">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#colNav">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <!--<a class="navbar-brand" href="#">Nombre web</a>-->
+    </div>
+    <div class="container-fluid collapse navbar-collapse" id="colNav">
         <ul class="nav navbar-nav">       
             <li><a id="btnMenu"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
             <li class="active"><a href="?page=inicio">Inicio</a></li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
             <li><a href="?page=contacto">Información y Contacto</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
             <li><a href="?page=registro"><span class="glyphicon glyphicon-user"></span> Entra/Regístrate</a></li>
-        </ul>
+        </ul> 
     </div>    
 </nav>
 <div id="sidenav" class="sidenav">
@@ -35,8 +35,8 @@ if(!isset($_SESSION['user'])){
             <a href='#'> 4rt ESO </a>
             <li class="list-group-item">Deportes</li>
             <?php
-                foreach($allSports as $sport){
-                    echo "<a href='#'>".$sport->getNombre()."</a>";
+                foreach($allSports as $sport){                     
+                    echo "<a href='#'>".($sport->getNombre())."</a>";
                 }
             ?>
         </ul>
@@ -53,7 +53,7 @@ if(!isset($_SESSION['user'])){
             <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
             <li class="active"><a href="?page=inicio">Inicio</a></li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
-            <li><a href="?page=mi_perfil">Mi perfil</a></li>
+            <li><a href="?page=gestion_torneos">Gestionar torneos</a></li>
             <?php
                 if($_SESSION['user']->getRango_fk() == 2){
                     echo '<li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>';
@@ -70,7 +70,7 @@ if(!isset($_SESSION['user'])){
                     <li class="dropdown-header">Acciones</li>
                     <li><a href="?page=mi_perfil">Mi perfil</a></li>
                     <li><a href="?page=mi_clase">Mi clase</a></li>
-                    <li><a href="?page=registro">Salir</a></li>
+                    <li><a href="?page=out">Salir</a></li>
                 </ul>
             </li>
         </ul>

@@ -4,6 +4,7 @@
         // Variables del usuario
         private $IdRonda;
         private $Ronda;
+        private $IdGanador_fk;
         private $IdTorneo_fk;
         
         // Constructor
@@ -31,6 +32,14 @@
 
         function setRonda($Ronda) {
             $this->Ronda = $Ronda;
+        }
+        
+        function getIdGanador_fk() {
+            return $this->IdGanador_fk;
+        }
+
+        function setIdGanador_fk($IdGanador_fk) {
+            $this->IdGanador_fk = $IdGanador_fk;
         }
 
         function setIdTorneo_fk($IdTorneo_fk) {

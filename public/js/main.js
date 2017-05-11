@@ -5,7 +5,7 @@ $(function() {
     
     btnMenu.click(function(){
         if($("#btnMenu span:first").attr("class") == "glyphicon glyphicon-menu-hamburger"){
-            sidenav.css("width", "12vw"); 
+            sidenav.css("width", "300px"); 
             $("#btnMenu span:first").attr("class", "glyphicon glyphicon-menu-left");
         }else{
             sidenav.css("width", "0");
@@ -171,4 +171,22 @@ $(function() {
         }
     });
     $('#profile').popover();
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//GESTIONAR TORNEOS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$('.lateTourn').click(function(){
+    
+});
+$('.prevTourn').click(function(){
+    console.log("entre");
+    confirm("Aun no es la fecha de inicio. ¿Estás seguro de que quieres empezar el torneo?");
+});
+$('.editTourn').click(function(){
+    
+});
+$('.deleteTourn').click(function(){
+    confirm("¿Estás seguro de que quieres eliminar el torneo? Todos los datos referentes al torneo se eliminarán.");
 });

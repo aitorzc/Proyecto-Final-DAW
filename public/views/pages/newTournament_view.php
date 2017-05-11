@@ -167,33 +167,23 @@
         <?php
         }else{    
             $nombre = $_POST['nameTournament'];
-
             $arrDeporte = explode(",", $_POST['sportName']);
-            $idDeporte = $arrDeporte[0];
-            $deporte = $arrDeporte[1];
-
             $agrup = $_POST['gameType'];
             $clase = $_POST['players'];
             $fecha = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $_POST['selDate'].'+9 hours')));
             $comentario = $_POST['comment'];
 
             if($agrup == 'Individial'){
-
+                $teamA = false;
+                $teamB = false;
             }else{
                 $teams = generateTeams($clase);
                 $teamA = $teams[0];
                 $teamB = $teams[1];
             }
-
-                    //Creat torneo a table torneo
-            $torneo = new Tournament();
-            $torneo->setNombre($nombre);
-            $torneo->setIdDeporte_fk($idDeporte);
-            $torneo->setNumParticipantes(count($clase));
-            $torneo->setFecha($fecha);
-            $torneo->setComentario($comentario);
-            $idTorneo = $torneo->save();
-            $torneo->setIdTorneo($idTorneo);
+            // Inserción a la base de datos
+            $createTournamentRes = createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase);
+            
         ?>
         <div class="container-fluid paddAll">
            <div class="col-md-offset-4 col-md-4 text-center">
@@ -203,7 +193,7 @@
                             <h4><?php echo $nombre; ?></h4>
                         </div>
                         <div class="panel-body text-center">
-                            <p><strong><?php echo $deporte; ?></strong></p>
+                            <p><strong><?php echo $arrDeporte[1]; ?></strong></p>
                         </div>
                         <ul class="list-group text-center">
                             <?php
@@ -231,57 +221,14 @@
                             ?>
                         </ul>
                         <div class="panel-footer">
-                            <span>Torneo creado correctamente</span>
+                            <span><?php echo $createTournamentRes ?></span>
                         </div>
                     </div>
                 </div> 
         </div>
         
         <?php
-        
-        
-        
-        //Crear equipos tabla equipo
-        $equipoA = new Team();
-        $equipoA->setNombre(returnName());
-        $equipoA->setIdTorneo_fk($torneo->getIdTorneo());
-        $idEquipoA = $equipoA->save();
-        $equipoA->setIdEquipo($idEquipoA);
-        
-        $equipoB = new Team();
-        $equipoB->setNombre(returnName());
-        $equipoB->setIdTorneo_fk($torneo->getIdTorneo());
-        $idEquipoB = $equipoB->save();
-        $equipoB->setIdEquipo($idEquipoB);
-//        
-//        //Crear relaciones equipo-alumno table equipo_alumno
-//        foreach($teamA as $idA => $aVal){
-//            $equipo_alumno = new Team_student();
-//            $equipo_alumno->setIdEquipo_fk($equipoA->getIdEquipo());
-//            $equipo_alumno->setIdAlumno_fk($idA);
-//            $equipo_alumno->save();
-//        }
-//        
-//        foreach($teamB as $idB => $bVal){
-//            $equipo_alumno = new Team_student();
-//            $equipo_alumno->setIdEquipo_fk($equipoB->getIdEquipo());
-//            $equipo_alumno->setIdAlumno_fk($idB);
-//            $equipo_alumno->save();
-//        }
-        
-        
-//        $ronda = new Round();
-//        $ronda->setIdTorneo_fk($torneo->getIdTorneo());
-//        $ronda->setRonda($Ronda);
-//        
-//        $equipo_ronda = new Team_round();
-//        $equipo_ronda->setIdEquipo_fk($IdEquipo_fk);
-//        $equipo_ronda->setIdRonda_fk($IdRonda_fk);
-        
-        
-        
         }
-        
         //FOOTER
         include_once(INCLUDES . DS . 'main_footer.php');
         ?>            

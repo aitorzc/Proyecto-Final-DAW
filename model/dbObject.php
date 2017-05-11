@@ -24,7 +24,6 @@ abstract class dbObject {
     }
     
     protected function insertRow(array $changes) {
-        echo "INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
         $consulta = "INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
 
         if ($this->db->query($consulta) === true) {
@@ -77,7 +76,16 @@ abstract class dbObject {
         return $list;
     }
     public function selectAdd($select, $add) {
-        $consulta = $this->db->query("SELECT ".implode(', ', $select)." FROM {$this->getTableName()} {$where}");
+        $consulta = $this->db->query("SELECT {$select} FROM {$this->getTableName()} {$add}");
+        $list = array();
+        
+        while ($obj = $consulta->fetch_object(get_class($this))) {
+            array_push($list, $obj);
+        }
+        return $list;
+    }
+    public function selectClean($select) {
+        $consulta = $this->db->query($select);
         $list = array();
         
         while ($obj = $consulta->fetch_object(get_class($this))) {
@@ -96,6 +104,22 @@ abstract class dbObject {
         return $list;
     }
 
+    public function beginTransaction(){
+        $this->db->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+        $this->db->autocommit(FALSE);
+    }
+    
+    public function finishTransaction(){
+        if($this->db->commit()){
+            $this->db->autocommit(TRUE);
+            return true;
+        }else{
+            $this->db->rollback();
+            $this->db->autocommit(TRUE);
+            return false;
+        }
+    }
+    
 }
     
 

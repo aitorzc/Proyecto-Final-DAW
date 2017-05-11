@@ -4,10 +4,7 @@ $dbConn = Connection::connect();
 dbObject::setDbCon($dbConn);
 
 session_start();
-/*
-if(isset($_GET['crearTorneo'])){
-    echo "torneo creado<br>";
-}*/
+
 if(isset($_GET['tryLog'])){
     $userLog = $_POST['nickLog'];
     $pswdLog = $_POST['pswdLog'];
@@ -34,7 +31,8 @@ $data = array(
     'nuevo_torneo'      => PAGES.DS.'newTournament_view.php',
     'out'               => PAGES.DS.'logOut.php',
     'mi_perfil'         => PAGES.DS.'myProfile_view.php',
-    'mi_clase'         => PAGES.DS.'myClass_view.php'
+    'mi_clase'          => PAGES.DS.'myClass_view.php',
+    'gestion_torneos'   => PAGES.DS.'gestionTorneos_view.php'
 );
 // Comprobación de paso por get
 if(empty($page) || !key_exists($page, $data)){
@@ -52,28 +50,8 @@ $allCourses = $courses->getAll();
 //Recogemos lista de estudiantes
 $students = new Student();
 $allStudents = $students->getAll();
-/*//Alumnos permitidos
-$allowedUsers = new User();
-$arrAllowedUsers =$allowedUsers->getAll();
-$alumnos1 = array();
-$alumnos2 = array();
-$alumnos3 = array();
-$alumnos4 = array();
-
-foreach ($arrAllowedUsers as $user){
-    if($user->Permiso == 1 && $user->Curso == 1){
-        array_push($alumnos1, $user->Nombre);
-    }
-    if($user->Permiso == 1 && $user->Curso == 2){
-        array_push($alumnos2, $user->Nombre);
-    }
-    if($user->Permiso == 1 && $user->Curso == 3){
-        array_push($alumnos3, $user->Nombre);
-    }
-    if($user->Permiso == 1 && $user->Curso == 4){
-        array_push($alumnos4, $user->Nombre);
-    }
-}*/
+$tournaments = new Tournament();
+$allTournaments = $tournaments->getAll();
 foreach($data as $name => $url){
     if($page == $name){   
         //Función para que el output de html no se acumule
@@ -81,7 +59,6 @@ foreach($data as $name => $url){
         require_once $url;
     }
 }
-
 
 //TODO: Sistema de clases para views, models y controllers  
 //TODO: Crear urls amigables

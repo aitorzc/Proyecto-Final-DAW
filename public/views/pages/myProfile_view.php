@@ -23,7 +23,7 @@ include_once(INCLUDES.DS.'main_header.php');
                     </div>
                 </div>
                 <div class=" col-xs-9 col-xs-9 "> 
-                    <table class="table table-user-information">
+                    <table class="table">
                         <tbody>
                             <tr>
                                 <td>Usuario</td>

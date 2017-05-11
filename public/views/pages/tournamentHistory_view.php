@@ -14,7 +14,40 @@ include_once(INCLUDES.DS.'main_header.php');
 ?>
     
 <div class="container-fluid paddAll">
-    <p>hola</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Deporte</th>
+                <th>Participantes</th>
+                <th>Fecha</th>
+                <th>Comentario</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            $tourns = new Tournament();
+            $allTournsByDate = $tourns->selectAdd('*', 'ORDER BY Fecha ASC');
+            foreach($allTournsByDate as $key => $value){
+                $comentario = strlen($value->getComentario())>=20?substr($value->getComentario(), 0, 20)."...":$value->getComentario();
+                echo "<tr>";
+                echo "<td class='text-left'>".$value->getNombre()."</td>";
+                foreach($allSports as $sport){
+                    if($sport->getId() == $value->getIdDeporte_fk()){
+                        echo "<td class='text-left'>".$sport->getNombre()."</td>";
+                    }
+                }
+                echo "<td class='text-left'>".$value->getNumParticipantes()."</td>";
+                echo "<td class='text-left'>".$value->getFecha()."</td>";
+                echo "<td class='text-left'>".$comentario."</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table> 
+   
+    
 </div>
 <?php
 //FOOTER
