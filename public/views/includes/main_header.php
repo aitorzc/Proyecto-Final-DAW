@@ -3,20 +3,29 @@ if(!isset($_SESSION['user'])){
 //Header para usuarios no logueados
 ?>
 <nav class="navbar">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#colNav">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <!--<a class="navbar-brand" href="#">Nombre web</a>-->
-    </div>
-    <div class="container-fluid collapse navbar-collapse" id="colNav">
-        <ul class="nav navbar-nav">       
-            <li><a id="btnMenu"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
-        </ul>
+    <div class="container-fluid" id="colNav">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="?page=inicio">Torneos extraescolares</a>
+        </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="?page=inicio">Inicio</a></li>
+            <li class="dropdown">
+                <a data-toggle="dropdown">Categorías <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header">Cursos</li>
+                    <li><a href='#'> 1r ESO </a></li>
+                    <li><a href='#'> 2n ESO </a></li>
+                    <li><a href='#'> 3r ESO </a></li>
+                    <li><a href='#'> 4rt ESO </a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Deportes</li>
+                    <?php
+                    foreach($allSports as $sport){                     
+                        echo "<li><a href='#'>".($sport->getNombre())."</a></li>";
+                    }
+                    ?>
+                </ul>
+            </li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
             <li><a href="?page=contacto">Información y Contacto</a></li>
         </ul>
@@ -25,33 +34,34 @@ if(!isset($_SESSION['user'])){
         </ul> 
     </div>    
 </nav>
-<div id="sidenav" class="sidenav">
-    <nav>
-        <ul class="sidebar-nav nav list-group">
-            <li class="list-group-item">Cursos</li>
-            <a href='#'> 1r ESO </a>
-            <a href='#'> 2n ESO </a>
-            <a href='#'> 3r ESO </a>
-            <a href='#'> 4rt ESO </a>
-            <li class="list-group-item">Deportes</li>
-            <?php
-                foreach($allSports as $sport){                     
-                    echo "<a href='#'>".($sport->getNombre())."</a>";
-                }
-            ?>
-        </ul>
-    </nav>
-  
-</div>
 <?php
 }else{
 //Header para usuarios logueados
 ?>    
     <nav class="navbar">   
-    <div class="container-fluid myBar">
-        <ul class="nav navbar-nav">       
-            <li><a id="btnMenu" onclick="openSidenav()"><span class="glyphicon glyphicon-menu-hamburger"></span> Categorías</a></li>
+        <div class="container-fluid myBar">
+            <ul class="nav navbar-nav"> 
+                <div class="navbar-header">
+          <a class="navbar-brand" href="?page=inicio">Torneos extraescolares</a>
+        </div>
             <li class="active"><a href="?page=inicio">Inicio</a></li>
+            <li class="dropdown">
+                <a data-toggle="dropdown">Categorías <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header">Cursos</li>
+                    <li><a href='#'> 1r ESO </a></li>
+                    <li><a href='#'> 2n ESO </a></li>
+                    <li><a href='#'> 3r ESO </a></li>
+                    <li><a href='#'> 4rt ESO </a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Deportes</li>
+                    <?php
+                    foreach($allSports as $sport){                     
+                        echo "<li><a href='#'>".($sport->getNombre())."</a></li>";
+                    }
+                    ?>
+                </ul>
+            </li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
             <li><a href="?page=gestion_torneos">Gestionar torneos</a></li>
             <?php
@@ -63,36 +73,19 @@ if(!isset($_SESSION['user'])){
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <button id="profile" class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
-                    <?php echo "Hola,    ".$_SESSION['student']->getNombre()." ".$_SESSION['student']->getApellido(); ?>
+                    <?php echo "Hola, ".$_SESSION['student']->getNombre()." ".$_SESSION['student']->getApellido(); ?>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li class="dropdown-header">Acciones</li>
                     <li><a href="?page=mi_perfil">Mi perfil</a></li>
                     <li><a href="?page=mi_clase">Mi clase</a></li>
+                    <li class="divider"></li>
                     <li><a href="?page=out">Salir</a></li>
                 </ul>
             </li>
         </ul>
     </div>    
 </nav>
-<div id="sidenav" class="sidenav">
-    <nav>
-        <ul class="sidebar-nav nav list-group">
-            <li class="list-group-item">Cursos</li>
-            <a href='#'> 1r ESO </a>
-            <a href='#'> 2n ESO </a>
-            <a href='#'> 3r ESO </a>
-            <a href='#'> 4rt ESO </a>
-            <li class="list-group-item">Deportes</li>
-            <?php
-                foreach($allSports as $sport){
-                    echo "<a href='#'>".$sport->getNombre()."</a>";
-                }
-            ?>
-        </ul>
-    </nav>
-  
-</div>
 <?php
 }

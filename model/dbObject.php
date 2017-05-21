@@ -28,23 +28,22 @@ abstract class dbObject {
 
         if ($this->db->query($consulta) === true) {
             if($this->db->insert_id){
+                echo "<br>INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");<br>";
+
                 return $this->db->insert_id;
-                echo "insertado correctamente";
             }else{
                 return true;
             }
         }else{
-            echo "error al insertar: ".$this->db->error;
             return false;
         }
     }
 
     public function deleteWhere($where) {
-        
         $consulta = "DELETE FROM {$this->getTableName()} WHERE {$where}";
         
         if ($this->db->query($consulta) === true) {
-            echo "<br>BORRADO correctamente.";
+            return true;
         } else {
             echo "<br>Error BORRANDO: " . $this->db->error;
         }
@@ -56,8 +55,19 @@ abstract class dbObject {
         foreach ($changes as $field => $value){
             array_push($setVals, "{$field} = '{$value}'");
         }
-        
+        echo "UPDATE {$this->getTableName()} SET ". implode(', ', $setVals)." WHERE {$where}";
         $consulta = "UPDATE {$this->getTableName()} SET ". implode(', ', $setVals)." WHERE {$where}";
+
+        if ($this->db->query($consulta) === true) {
+            echo "Actualizado correctamente.";
+        } else {
+            echo "Error actualizando: " . $this->db->error;
+        }
+    }
+    
+    public function updateCleanRow($data){
+
+        $consulta = "UPDATE {$this->getTableName()} SET ".$data."";
 
         if ($this->db->query($consulta) === true) {
             echo "Actualizado correctamente.";

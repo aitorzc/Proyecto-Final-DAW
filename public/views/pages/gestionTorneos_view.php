@@ -8,13 +8,14 @@ include_once(INCLUDES.DS.'main_head.php');
 <?php
 //HEADER
 include_once(INCLUDES.DS.'main_header.php'); 
+if(!isset($_GET['startTournament'])){
 ?>
 <div class="container-fluid paddAll">
     <div class="panel panel-info">
         <div class="panel-heading">Gestión de torneos
         </div>
         <div class="panel-body">
-            <table class="table">
+            <table class="table" id="tableTournaments">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -50,12 +51,13 @@ include_once(INCLUDES.DS.'main_header.php');
                         echo "<td class='text-left'>".$comentario."</td>";
                         
                         if($value->getFecha() > $actualDate){
-                            echo "<td><button class='btn btn-success btn-xs prevTourn'><span class='glyphicon glyphicon-play'></span></button></td>";
+                            echo "<td><form class='playTourn' action='index.php?page=gestion_torneos&startTournament=".$value->getIdTorneo()."' method='POST' name='startTournForm'><span class='btn btn-success btn-xs prevTourn'><i class='glyphicon glyphicon-play'></i></span></form></td>";
                         }else{
-                            echo "<td><button class='btn btn-danger btn-xs lateTourn'><span class='glyphicon glyphicon-play'></span></button></td>";
+                            echo "<td><form action='index.php?page=gestion_torneos&startTournament=".$value->getIdTorneo()."' method='POST' name='startTournForm'><span class='btn btn-danger btn-xs lateTourn'><span class='glyphicon glyphicon-play'></span></span></form></td>";
                         }
-                        echo "<td><button class='btn btn-primary btn-xs editTourn'><span class='glyphicon glyphicon-pencil'></span></button></td>";
-                        echo "<td><button class='btn btn-danger btn-xs deleteTourn'><span class='glyphicon glyphicon-trash'></span></button></td>";
+                        echo "<td><form action='index.php?page=gestion_torneos&editTournament=".$value->getIdTorneo()."' method='POST' name='editTournForm'><span class='btn btn-primary btn-xs editTourn'><span class='glyphicon glyphicon-pencil'></span></span></form></td>";
+                        echo "<td><form action='index.php?page=gestion_torneos&delTournament=".$value->getIdTorneo()."' method='POST' name='delTournForm'><span class='btn btn-danger btn-xs deleteTourn'><span class='glyphicon glyphicon-trash'></span></span>";
+                        echo "</form></td>";
                         echo "</tr>";
                     }
     ?>
@@ -65,6 +67,22 @@ include_once(INCLUDES.DS.'main_header.php');
     </div>
 </div>
 <?php
+}else{
+    ?>
+    <div class="container-fluid paddAll">
+        <div class="panel panel-info">
+            <div class="panel-heading">Torneo: 
+            </div>
+            <div class="panel-body">
+                <?php
+                echo $stringTourn;
+                ?>
+                <input type="button" id="sendResults" class="btn btn-success" value="Enviar">
+            </div>
+        </div>
+    </div>        
+    <?php
+}
 //FOOTER
 include_once(INCLUDES.DS.'main_footer.php'); 
 ?>    

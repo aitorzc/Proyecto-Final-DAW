@@ -4,7 +4,15 @@ $dbConn = Connection::connect();
 dbObject::setDbCon($dbConn);
 
 session_start();
-
+if(isset($_GET['isAjaxReq'])){
+    return include_once CONTROLLER.DS.'action_controller.php';
+}
+if(isset($_GET['playingUser'])){
+    
+}
+if(isset($_GET['notPlayingUser'])){
+    
+}
 if(isset($_GET['tryLog'])){
     $userLog = $_POST['nickLog'];
     $pswdLog = $_POST['pswdLog'];
@@ -14,6 +22,18 @@ if(isset($_GET['tryLog'])){
     }else{
         $_GET['tryLog'] = false;
     }
+}
+if(isset($_GET['page'])){
+    if($_GET['page'] == 'out'){
+        session_destroy();
+        $_GET['page'] = 'registro';
+    }
+}
+if(isset($_GET['delTournament'])){
+    deleteTournament($_GET['delTournament']);
+}
+if(isset($_GET['startTournament'])){
+    $stringTourn = startTournament($_GET['startTournament']);
 }
 // Inicio de buffer
 ob_start();

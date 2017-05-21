@@ -5,6 +5,10 @@
 include_once(INCLUDES.DS.'register_head.php'); 
 ?>
 <body>
+<?php
+//HEADER
+include_once(INCLUDES.DS.'main_header.php'); 
+?>    
 <div class="container">
     <div class="main-content">
         <ul class="nav nav-tabs nav-justified">

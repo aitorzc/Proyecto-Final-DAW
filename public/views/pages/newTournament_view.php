@@ -42,8 +42,8 @@
                         <div class="col-xs-3 col-sm-3">
                             <select name="gameType" class="form-control selectpicker">
                                 <option value="0" disabled selected hidden>Elige tipo de agrupación</option>
-                                <option>Individual</option>
-                                <option>Por equipos</option>
+                                <option value="Individual">Individual</option>
+                                <option value="PorEquipos">Por equipos</option>
                             </select>
                         </div>
                     </div>
@@ -62,8 +62,10 @@
                                 <option value="0" disabled selected hidden>Elige curso</option>
                                 <?php
                                 // Lista de categorías
-                                foreach ($allCourses as $course) {
-                                    echo "<option value='".$course->getIdCurso()."'>" .$course->getNombre(). "</option>";
+                                foreach ($allCourses as $course){
+                                    if($course->getIdCurso() == $_SESSION['student']->getCurso_fk()){
+                                        echo "<option value='".$course->getIdCurso()."'>" .$course->getNombre(). "</option>";
+                                    }
                                 }
                                 ?>
                             </select>
@@ -75,46 +77,10 @@
                             <select name="players[]" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="24">
                                 <?php
                                 foreach ($allStudents as $stud){
-                                    if($stud->getCurso_fk() == 1){
+                                    if($stud->getCurso_fk() == $_SESSION['student']->getCurso_fk()){
                                         echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">'.$stud->getNombre(). '</option>';
                                     }
                                 }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-xs-3 col-sm-3 players" style="display: none">
-                            <select name="players[]" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="24">
-                                <?php
-                                foreach ($allStudents as $stud){
-                                    if($stud->getCurso_fk() == 2){
-                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
-                                    }
-                                }
-                                ?>
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-xs-3 col-sm-3 players" style="display: none">
-                            <select name="players[]" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="24">
-                                <?php
-                                foreach ($allStudents as $stud){
-                                    if($stud->getCurso_fk() == 3){
-                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
-                                    }
-                                }
-                                ?>
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-xs-3 col-sm-3 players" style="display: none">
-                            <select name="players[]" class="players" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="24">
-                                <?php
-                                foreach ($allStudents as $stud){
-                                    if($stud->getCurso_fk() == 4){
-                                        echo '<option value="' .$stud->getIdAlumno().",".$stud->getNombre(). '">' .$stud->getNombre(). '</option>';
-                                    }
-                                }
-                                ?>
                                 ?>
                             </select>
                         </div>
@@ -158,7 +124,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                                 <input type="button" class="btn btn-info" id="sendNewTourn" value="Crear torneo" name="sendNewTourn">
-                                <input type="submit" value="send" id="tournamentSubmit" name="tournamentSubmit" style="visibility: hidden">
+                                <input type="submit" value="Crear torneo" id="tournamentSubmit" name="tournamentSubmit" style="visibility: hidden">
                         </div>
                     </div>
             </form>
@@ -172,10 +138,11 @@
             $clase = $_POST['players'];
             $fecha = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $_POST['selDate'].'+9 hours')));
             $comentario = $_POST['comment'];
-
-            if($agrup == 'Individial'){
+            
+            if($agrup == 'Individual'){
                 $teamA = false;
                 $teamB = false;
+                $clase = generateTeams($clase, TRUE);
             }else{
                 $teams = generateTeams($clase);
                 $teamA = $teams[0];
@@ -183,7 +150,6 @@
             }
             // Inserción a la base de datos
             $createTournamentRes = createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase);
-            
         ?>
         <div class="container-fluid paddAll">
            <div class="col-md-offset-4 col-md-4 text-center">
@@ -199,8 +165,8 @@
                             <?php
                             echo "<li class='list-group-item'>Modo de juego: <b>".$agrup."</b></li>";
                             echo "<li class='list-group-item'>Fecha: <b>".$fecha."</b></li>";
-                            echo "<li class='list-group-item'>Equipo 1: ";
-                            if($agrup != 'Individial'){
+                            if($agrup != 'Individual'){
+                                echo "<li class='list-group-item'>Equipo 1: ";
                                 $namesA = "";
                                 foreach($teamA as $a){
                                     $namesA .= $a.", ";
@@ -215,6 +181,11 @@
                                 echo substr($namesB, 0, strlen($namesB)-2);
                             }else{
                                 echo "<li class='list-group-item'>Jugadores: ";
+                                $names = "";
+                                foreach($clase as $c){
+                                    $names.=$c.", ";
+                                }
+                                echo substr($names, 0, strlen($names)-2);
                             }
                             echo "</li>";
                             echo "<li class='list-group-item'>Comentario: <b>".$comentario."</b></li>";

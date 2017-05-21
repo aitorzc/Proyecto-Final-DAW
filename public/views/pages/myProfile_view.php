@@ -16,10 +16,11 @@ include_once(INCLUDES.DS.'main_header.php');
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-xs-3 col-xs-3 imgContainer" align="center"> 
+                <form action="index.php?page=mi_perfil" id="profileForm" enctype="multipart/form-data" method="POST">
+                    <div class="col-xs-3 col-xs-3 imgContainer" align="center"> 
                     <img id="imgProfile" alt="Foto" src="<?php echo "public/images/users/".$_SESSION['user']->getAvatar()?>" class="img-circle img-responsive">
                     <div id="fadeEffect">
-                        <div class="textEffect">Añade una foto</div>
+                        <div class="textEffect"><input type="file" id="inpFile" name="inpFile" value="Añade una foto"> </div>
                     </div>
                 </div>
                 <div class=" col-xs-9 col-xs-9 "> 
@@ -32,19 +33,16 @@ include_once(INCLUDES.DS.'main_header.php');
                             <tr>
                                 <td>Contraseña</td>
                                 <td class="editPasswd">**************</td>
-                                <form action="index?page=mi_perfil&edit=passwd" method="POST">
                                     <td class="editPasswd" style="display: none;">
-                                        <div class="col-xs-7">
+                                        <div class="col-xs-10">
                                             <div class="input-group">
                                                 <span class="input-group-addon btn btn-info" id="basic-addon1">
                                                     <span id="verPswd">👁</span>
                                                 </span>
-                                                <input type="password" id="cambiarPswd" min="8" max="20" placeholder="nueva contraseña" class="form-control">
+                                                <input type="password" id="cambiarPswd" min="8" max="30" placeholder="nueva contraseña" class="form-control">
                                             </div>
                                         </div>
-                                        <input class="btn btn-primary" id="checkPswd" value="Comprobar" type="submit">
                                     </td>
-                                </form>
                             </tr>
                             <tr>
                                 <td>Nombre</td>
@@ -59,12 +57,11 @@ include_once(INCLUDES.DS.'main_header.php');
                                 <td class="editEmail">
                                     <?php echo $_SESSION['student']->getEmail() ?>
                                 </td>
-                                <form action="index?page=mi_perfil&edit=email" method="POST">
+                                
                                     <td class="editEmail" style="display: none;">
                                         <div class="col-xs-5">
                                             <input class="form-control" id="cambiarEmail" value="<?php echo $_SESSION['student']->getEmail() ?>" type="text">
                                         </div>
-                                        <input class="btn btn-primary" value="Guardar" type="submit">
                                     </td>
                                 </form>
                             </tr>
@@ -83,17 +80,14 @@ include_once(INCLUDES.DS.'main_header.php');
         </div>
         <div class="panel-footer">
             <a id="btnEditProfile" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-            <a id="btnSaveProfile" style="display: none;" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-save"></i></a>
+            <button type="submit" id="btnSaveProfile" style="display: none;" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-save"></i></button>
             <a id="btnCancelProfile" style="display: none;" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
-            <span class="pull-right">
-                <a data-original-title="Eliminar usuario" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
-            </span>
         </div>
     </div>
 </div>
 <?php
 //FOOTER
-//include_once(INCLUDES.DS.'main_footer.php'); 
+include_once(INCLUDES.DS.'main_footer.php'); 
 ?>    
 </body>
 </html>

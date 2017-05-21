@@ -3,12 +3,27 @@ body{
     background-attachment: fixed;
     min-height: 90vh;
 }
+.dropdown{
+    cursor: pointer;
+}
+footer{
+    width: 100%;
+    position: fixed;
+    bottom:0;
+}
 .container-fluid{
     margin-left: 10vw;
     margin-right: 10vw;
     background-color: rgba(255, 255, 255, 0.6);
     margin-bottom: 30px;
-    padding-bottom: 20px;
+    padding:20px 20px 20px 20px;
+}
+.myFooter{
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 0px!important;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 .sidenav {
     height: 100%;
@@ -49,12 +64,8 @@ body{
     height: 180px;
     float: right;
     margin-right: 5%;
-    border: 1px solid black;
 }
-#img1{
-    background-image: url("../images/new_tournament/volleyball.jpg");
-    background-size: cover;
-}
+
 paddAll{
     padding-left:10px;
     padding-right:10px;
@@ -96,4 +107,7 @@ paddAll{
   color: black;
   font-size: 16px;
   padding: 16px 32px;
+}
+.hidden{
+    visibility: hidden;
 }
