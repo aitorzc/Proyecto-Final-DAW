@@ -15,14 +15,15 @@ if(!isset($_GET['startTournament'])){
         <div class="panel-heading">Gestión de torneos
         </div>
         <div class="panel-body">
-            <table class="table" id="tableTournaments">
+            <table data-order='[[ 1, "asc" ]]' class="table" id="tableTournaments">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Deporte</th>
+                        <th>Modo</th>
                         <th>Participantes</th>
-                        <th>Fecha</th>
+                        <th data-class-name="priority">Fecha</th>
                         <th>Comentario</th>
                         <th></th>
                         <th></th>
@@ -36,28 +37,28 @@ if(!isset($_GET['startTournament'])){
                     //Este query selecciona los torneos sin claves duplicadas en los que aun no se haya celebrado ninguna ronda por lo que el IdGanador en la tabla ronda estara en NULL
                     $allTournsByDate = $tourns->selectClean("SELECT DISTINCT A.* FROM torneo A INNER JOIN ronda B ON A.IdTorneo = B.IdTorneo_fk WHERE B.IdGanador_fk IS NULL ORDER BY A.Fecha ASC");
                     
-                    foreach ($allTournsByDate as $key => $value) {
+                    foreach ($allTournsByDate as $key => $value){
                         $comentario = strlen($value->getComentario())>=20?substr($value->getComentario(), 0, 20)."...":$value->getComentario();
                         echo "<tr>";
-                        echo "<td class='text-left'>".$value->getIdTorneo()."</td>";
-                        echo "<td class='text-left'>".$value->getNombre()."</td>";
+                        echo "<td for='".$value->getIdTorneo()."' class='idTorneo'>".$value->getIdTorneo()."</td>";
+                        echo "<td for='".$value->getNombre()."' class='Nombre'>".$value->getNombre()."</td>";
                         foreach($allSports as $sport){
                             if($sport->getId() == $value->getIdDeporte_fk()){
                                 echo "<td class='text-left'>".$sport->getNombre()."</td>";
                             }
                         }
+                        echo "<td class='text-left'>".$value->getModo()."</td>";
                         echo "<td class='text-left'>".$value->getNumParticipantes()."</td>";
-                        echo "<td class='text-left'>".$value->getFecha()."</td>";
-                        echo "<td class='text-left'>".$comentario."</td>";
+                        echo "<td for='".$value->getFecha()."' class='fecha'>".$value->getFecha()."</td>";
+                        echo "<td for='".$value->getComentario()."' class='comentario '>".$comentario."</td>";
                         
                         if($value->getFecha() > $actualDate){
                             echo "<td><form class='playTourn' action='index.php?page=gestion_torneos&startTournament=".$value->getIdTorneo()."' method='POST' name='startTournForm'><span class='btn btn-success btn-xs prevTourn'><i class='glyphicon glyphicon-play'></i></span></form></td>";
                         }else{
                             echo "<td><form action='index.php?page=gestion_torneos&startTournament=".$value->getIdTorneo()."' method='POST' name='startTournForm'><span class='btn btn-danger btn-xs lateTourn'><span class='glyphicon glyphicon-play'></span></span></form></td>";
                         }
-                        echo "<td><form action='index.php?page=gestion_torneos&editTournament=".$value->getIdTorneo()."' method='POST' name='editTournForm'><span class='btn btn-primary btn-xs editTourn'><span class='glyphicon glyphicon-pencil'></span></span></form></td>";
-                        echo "<td><form action='index.php?page=gestion_torneos&delTournament=".$value->getIdTorneo()."' method='POST' name='delTournForm'><span class='btn btn-danger btn-xs deleteTourn'><span class='glyphicon glyphicon-trash'></span></span>";
-                        echo "</form></td>";
+                        echo "<td><span for='".$value->getIdTorneo()."' class='btn btn-primary btn-xs editTourn'><span class='glyphicon glyphicon-pencil'></span></span></td>";
+                        echo "<td><span for='".$value->getIdTorneo()."' class='btn btn-danger btn-xs deleteTourn'><span class='glyphicon glyphicon-trash'></span></span></td>";
                         echo "</tr>";
                     }
     ?>
@@ -86,5 +87,43 @@ if(!isset($_GET['startTournament'])){
 //FOOTER
 include_once(INCLUDES.DS.'main_footer.php'); 
 ?>    
+    <div class="hidden">
+        <form id="modifyTournament">
+            <fieldset>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 text-center">
+                            <h3>Modificar torneo</h3>
+                        </div>
+                        <div class='col-xs-12'>
+                            <label>Nombre</label>
+                            <div class="form-group">
+                                <input type="text" class="hidden" name="idTourn" value=""/>
+                                <input type="text" class="form-control" name="modifyNombre" value=""/>
+                            </div>
+                        </div>
+                        <div class='col-xs-12'>
+                            <label>Fecha</label>
+                            <div class="form-group">
+                                <input class="col-xs-12 form-control" name="modifyFecha" type="text" value=""/>
+                            </div>
+                        </div>
+                        <div class='col-xs-12'>
+                            <label>Comentario</label>
+                            <div class="form-group">
+                                <textarea class="col-xs-12 form-control" name="modifyComentario" type="text" ></textarea>
+                            </div>
+                        </div>
+                        <legend></legend>
+                        <div class='col-xs-12'>
+                            <div class="form-group">
+                                <span class="btn btn-primary col-xs-12" id="saveTournamentChanges">Guardar modificaciones</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>    
 </body>
 </html>

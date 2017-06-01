@@ -79,7 +79,8 @@
                 'Apellido'   => $this->getApellido(),
                 'Email'      => $this->getEmail(),
                 'Usuario_fk' => $this->getUsuario_fk(),
-                'Permiso'    => $this->getPermiso()
+                'Permiso'    => $this->getPermiso(),
+                'Curso_fk'   => $this->getCurso_fk()
             );
             return $this->insertRow($values);
         }

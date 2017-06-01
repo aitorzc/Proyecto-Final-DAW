@@ -9,7 +9,55 @@ include_once(INCLUDES.DS.'main_head.php');
 //HEADER
 include_once(INCLUDES.DS.'main_header.php'); 
 ?>
-<div class="container-fluid paddAll">
+<div data-gracket='[
+   [
+      [
+         {
+            "name":"jQuery",
+            "id":"jquery"
+         },
+         {
+            "name":"MooTools",
+            "id":"mootools"
+         }
+      ],
+      [
+         {
+            "name":"extjs",
+            "id":"extjs",
+            "seed":10
+         },
+         {
+            "name":"jqueryui",
+            "id":"jqueryui",
+            "seed":14
+         }
+      ]
+   ],
+   [
+      [
+         {
+            "name":"jQuery",
+            "id":"jquery",
+            "seed":1
+         },
+         {
+            "name":"extjs",
+            "id":"extjs",
+            "seed":10
+         }
+      ]
+   ],
+   [
+      [
+         {
+            "name":"jQuery",
+            "id":"jquery",
+            "seed":1
+         }
+      ]
+   ]
+]' class="container-fluid paddAll">
 </div>
 <?php
 //FOOTER

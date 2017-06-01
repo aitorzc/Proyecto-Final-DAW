@@ -149,7 +149,7 @@
                 $teamB = $teams[1];
             }
             // Inserción a la base de datos
-            $createTournamentRes = createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase);
+            $createTournamentRes = createTournament($nombre, $agrup, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase);
         ?>
         <div class="container-fluid paddAll">
            <div class="col-md-offset-4 col-md-4 text-center">

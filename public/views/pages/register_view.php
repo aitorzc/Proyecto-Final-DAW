@@ -13,12 +13,14 @@ include_once(INCLUDES.DS.'main_header.php');
     <div class="main-content">
         <ul class="nav nav-tabs nav-justified">
             <li class="active"><a data-toggle="pill" href="#entrar">Entrar</a></li>
-            <li><a data-toggle="pill" href="#registrarme">Regístrate</a></li>
+            <li><a data-toggle="tab" href="#contacta">Contáctanos</a></li>
         </ul>
         <div class="tab-content">
             <div id="entrar" class="tab-pane fade in active">
-                <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal">
-                    <div class="form-group">
+                <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal margin-bt">
+                    <div class="form-group margin-bt">
+                        <label class='col-sm-offset-12'></label>
+                        <label class='col-sm-offset-12'></label>
                         <label class="control-label col-sm-2">Nick:</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="nickLog" onkeyup="logValidate()" id="nickLog" maxlength="12" placeholder="ej: johnTheExample">
@@ -32,67 +34,52 @@ include_once(INCLUDES.DS.'main_header.php');
                     </div>
                     <div class="form-group">        
                         <div class="col-sm-offset-2 col-sm-8">
-                            <input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">
                             <?php
                             if(isset($_GET['tryLog'])){
                                 if(!$_GET['tryLog']){
+                                    echo '<div class="g-recaptcha" data-sitekey="6LeGnyMUAAAAAB650V5WA_pVlZiclcuS4ETj7IcB"></div>';
+                                    echo '<input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">';
                                     echo '<span style="font-size:14px" class="label label-danger">Usuario o contraseña incorrectos</span>';
                                 }
+                            }else{
+                                echo '<input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">';
                             }
                             ?>
                         </div>
                     </div>
                 </form>
             </div>
+            <div id="contacta" class="tab-pane fade">
+                <form class="margin-bt">
+                    <!-- Nombre-->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="name"></label>
+                        <div class="col-md-6">
+                            <input id="name" name="name" type="text" placeholder="Tu nombre" class="form-control">
+                        </div>
+                    </div>
 
-            <div id="registrarme" class="tab-pane fade">
-                <form action="" method="POST" class="form-horizontal">
-                    <h6 class="text-center">Los campos marcados con * son obligatorios</h6>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Nick:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="nick" minlength="4" maxlength="15" placeholder="ej: johnTheExample *">
-                            <span class="alert-danger">El nick debe contener entre 4 y 15 carácteres</span>
+                    <!-- Email-->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="email"></label>
+                        <div class="col-md-6">
+                            <input id="headers" name="email" type="text" placeholder="Tu email" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Nombre:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="nombre" maxlength="25" placeholder="ej: John Example">
-                            <span class="alert-danger">El nombre debe empezar por mayúscula</span>
+
+                    <!-- Mensaje -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="message"></label>
+                        <div class="col-md-6">
+                            <textarea class="form-control" id="message" name="message" placeholder="Introduzca su mensaje aquí..." rows="5"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Email:</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="email" maxlength="30" placeholder="ej: example@example.example *">
-                            <span class="alert-danger">Por favor, introduzca un correo válido</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Password:</label>
-                        <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswd" maxlength="20" placeholder="ej: ex@mPl3 *">
-                            <span class="alert-danger">La contraseña debe contener una minúscula, una mayúscula , un número y comprendido entre 4 y 20 carácteres</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Repetir Password:</label>
-                        <div class="col-sm-8">          
-                            <input type="password" class="form-control" id="pswd2" maxlength="20" placeholder="ej: ex@mPl3 *">
-                            <span class="alert-danger">Las contraseñas deben coincidir</span>
-                        </div>
-                    </div>
-                    <div class="form-group">        
-                        <div class="col-sm-offset-2 col-sm-8">
-                            <div class="checkbox">
-                                <label><input type="checkbox" checked="checked"> Acepto los términos y condiciones</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">        
-                        <div class="col-sm-offset-2 col-sm-8">
-                            <button type="submit" disabled class="btn btn-info">Enviar</button>
+
+                    <!-- Enviar -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="send"></label>
+                        <div class="col-md-1">
+                            <span class="btn btn-primary" id="sendMail">Enviar</span>
                         </div>
                     </div>
                 </form>

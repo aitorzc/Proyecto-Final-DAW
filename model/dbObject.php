@@ -19,7 +19,6 @@ abstract class dbObject {
     }
     //Función para utilizar el nombre de clase como nombre de tabla de base de datos para ahorrar código
     private function getTableName() {
-        //return empty($this->tableName) ? get_class($this) : $this->tableName;
         return $this->tableName;
     }
     
@@ -28,8 +27,6 @@ abstract class dbObject {
 
         if ($this->db->query($consulta) === true) {
             if($this->db->insert_id){
-                echo "<br>INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");<br>";
-
                 return $this->db->insert_id;
             }else{
                 return true;
@@ -50,32 +47,36 @@ abstract class dbObject {
     }
     
     public function updateRow(array $changes, $where){
-   
         $setVals = array();
         foreach ($changes as $field => $value){
             array_push($setVals, "{$field} = '{$value}'");
         }
-        echo "UPDATE {$this->getTableName()} SET ". implode(', ', $setVals)." WHERE {$where}";
         $consulta = "UPDATE {$this->getTableName()} SET ". implode(', ', $setVals)." WHERE {$where}";
 
         if ($this->db->query($consulta) === true) {
-            echo "Actualizado correctamente.";
+            return true;
         } else {
             echo "Error actualizando: " . $this->db->error;
         }
     }
     
     public function updateCleanRow($data){
-
         $consulta = "UPDATE {$this->getTableName()} SET ".$data."";
-
+        
         if ($this->db->query($consulta) === true) {
             echo "Actualizado correctamente.";
         } else {
             echo "Error actualizando: " . $this->db->error;
         }
     }
-    
+    public function selectAssoc($select){
+        $consulta = $this->db->query($select);
+        $list = array();
+        while ($row = $consulta->fetch_assoc()) {
+            array_push($list, $row);
+        }
+        return $list;
+    }
     public function selectWhere(array $select, $where) {
         $consulta = $this->db->query("SELECT ".implode(', ', $select)." FROM {$this->getTableName()} WHERE {$where}");
         $list = array();

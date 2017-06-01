@@ -22,7 +22,23 @@ function checkLogin($userLog, $pswdLog){
         return true;
     }
 }    
-
+function checkAttempts(){
+    if(isset($_SESSION['attempts'])){
+        if($_SESSION['attempts'] == 3){
+            return false;
+        }else{
+            $_SESSION['attempts']++;
+            return true;
+        }
+    }
+}
+function sendMail($subject, $message, $headers){
+    $to = "torneossonferrer@hotmail.com";
+    echo $subject."<br>";
+    echo $message."<br>";
+    echo $headers."<br>";
+    return mail($to, $subject, $message, $headers);
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE NUEVO TORNEO
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +62,7 @@ function returnName(){
     return $defaultNames[0];
 }
 
-function createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase){
+function createTournament($nombre, $agrup, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase){
     $idDeporte = $arrDeporte[0];
     $deporte = $arrDeporte[1];
     
@@ -58,6 +74,7 @@ function createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $te
     $torneo->setNombre($nombre);
     $torneo->setIdDeporte_fk($idDeporte);
     $torneo->setNumParticipantes(count($clase));
+    $torneo->setModo($agrup);
     $torneo->setFecha($fecha);
     $torneo->setComentario($comentario);
     $idTorneo = $torneo->save();
@@ -67,7 +84,6 @@ function createTournament($nombre, $clase, $arrDeporte, $fecha, $comentario, $te
         generateTwoTeams($idTorneo, $teamA, $teamB);
     }
     else{
-        echo "entra si";
         generateIndividualTeams($idTorneo, $clase);
     }
     
@@ -152,7 +168,7 @@ function generateIndividualTeams($idTorneo, $clase){
         
         $ronda = new Round();
         $ronda->setIdTorneo_fk($idTorneo);
-        $ronda->setRonda($j+1);
+        $ronda->setRonda(1);
         $IdRonda_fk = $ronda->save();
         $ronda->setIdRonda($IdRonda_fk);
 
@@ -180,11 +196,13 @@ function deleteTournament($id){
 function startTournament($id){
     $startTorneo = new Tournament();
     $tourn = $startTorneo->selectAdd("*", "WHERE IdTorneo = {$id}");
-    
     $equipoRonda = new Team_round();
-    
-    $res = $equipoRonda->selectClean("SELECT B.IdRonda, B.Ronda,GROUP_CONCAT(c.IdEquipo, '~', c.Nombre, ' ') AS Equipo FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk WHERE B.IdTorneo_fk = {$id} GROUP BY B.IdRonda ORDER BY B.Ronda");
-    $insertResults = "<h3 class='text-center'>{$tourn[0]->getNombre()}</h3><h4>Seleccionar equipo ganador en cada ronda</h4>";
+    $res = $equipoRonda->selectClean("SELECT B.IdRonda, B.Ronda,GROUP_CONCAT(c.IdEquipo, '~', c.Nombre, ' ') AS Equipo FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk WHERE B.IdGanador_fk IS NULL AND B.IdTorneo_fk = {$id} GROUP BY B.IdRonda ORDER BY B.Ronda");
+    if(empty($res)){
+        return "<span>Torneo finalizado</span>";
+    }
+    $idTorneo = $id;
+    $insertResults = "<h3 class='text-center idTourn' for='{$idTorneo}'>{$tourn[0]->getNombre()} ({$idTorneo})</h3><h4>Seleccionar equipo ganador en cada ronda</h4>";
     $insertResults.= "<table class='table resTable'>"
                         . "<thead>"
                             . "<tr>"
@@ -194,11 +212,15 @@ function startTournament($id){
                             . "</tr>"
                         . "</thead>"
                         . "<tbody>";
-    foreach($res as $r){
-        $teams = explode(" ,",  $r->Equipo);
-        $teamA = explode("~", $teams[0]);
-        $teamB = explode("~", $teams[1]);
-        $insertResults.="<tr class='roundrow' roundid='".$r->IdRonda."'><td>".$r->Ronda."</td><td><button class='btnteam btn btn-primary teamA' idteam='".$teamA[0]."'>".$teamA[1]."</button></td><td><button class='btnteam btn btn-danger teamB' idteam='".$teamB[0]."'>".$teamB[1]."</buton></td></tr>";
+    
+    if($tourn[0]->getModo() != "Individuala"){    
+        foreach($res as $r){
+            $teams = explode(" ,",  $r->Equipo);
+            $teamA = explode("~", $teams[0]);
+            $teamB = explode("~", $teams[1]);
+            $insertResults.="<tr class='roundrow' roundid='".$r->IdRonda."'><td for='".$r->Ronda."'>".$r->Ronda."</td><td><button class='btnteam btn btn-primary teamA' idteam='".$teamA[0]."'>".$teamA[1]."</button></td><td><button class='btnteam btn btn-danger teamB' idteam='".$teamB[0]."'>".$teamB[1]."</buton></td></tr>";
+        }
+     
     }
     $insertResults.= "</tbody></table>";
     return $insertResults;
@@ -206,18 +228,170 @@ function startTournament($id){
 function insertTournRes(array $values){
     $winners = array();
     foreach($values as $v){
-        $round = $v['round'];
+        $round = $v['roundid'];
         $team = $v['teamid'];
-//        if(array_key_exists($team, $winners)){
-//            $winners[$team]++;
-//        }else{
-//            $winners[$team] = 1;
-//        }
         $changes = array("IdGanador_fk" => $team);
         $roundW = new Round();
         $roundW->updateRow($changes, "IdRonda = {$round}");
     }
 }
+function createNewRounds(array $values){
+    
+        print_r($values);
+
+    for($i = 0; $i < count($values);$i+=2){
+        $newRound = new Round();
+        $roundId = $values[$i]['roundid'];
+        $teamId = $values[$i]['teamid'];
+        $nextTeamId = $values[$i+1]['teamid'];
+        $round = $values[$i]['round'];
+        $idTourn = $values[0]['tournid'];
+        $newRound->setRonda($round+1);
+        $newRound->setIdTorneo_fk($idTourn);
+        $idRound = $newRound->save();
+        
+        $teamRound = new Team_round();
+        $teamRound->setIdRonda_fk($idRound);
+        $teamRound->setIdEquipo_fk($teamId);
+        $teamRound->save();
+        
+        $teamRound2 = new Team_round();
+        $teamRound2->setIdRonda_fk($idRound);
+        $teamRound2->setIdEquipo_fk($nextTeamId);
+        $teamRound2->save();
+    }
+}
+
+function modifyTournament(array $values){
+    $modTourn = new Tournament();
+    $id = $values['id'];
+    $nombre = $values['nombre'];
+    $fecha = $values['fecha'];
+    $comentario = $values['comentario'];
+    $vals = array(
+        'Nombre'        => $nombre,
+        'Fecha'         => $fecha,
+        'Comentario'    => $comentario 
+    );
+    $where = 'IdTorneo = '.$id.'';
+    return $modTourn->updateRow($vals, $where);
+}
+function showLastTourn(){
+    $showTourn = new Tournament();
+    $showTourn->getAll();
+    
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCIONES DE MOSTRAR RESULTADOS TORNEO + (GRACKETS)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function checkResultsType($id){
+    $tournCheck = new Tournament();
+    $res = $tournCheck->selectWhere(array("Modo, Nombre"), "IdTorneo = {$id}");
+    $nombre = $res[0]->getNombre();
+    if($res[0]->getModo() == "PorEquipos"){
+        return checkTournResults($id, $nombre);
+    }else{
+        return getTournJSONResults($id, $nombre);
+    }
+}
+
+function checkTournResults($id, $nombre){
+    $roundJSON = new Round();
+    $results = $roundJSON->selectClean("SELECT A.Ronda, B.Nombre FROM ronda A INNER JOIN equipo B ON A.IdGanador_fk = B.IdEquipo WHERE A.IdTorneo_fk = {$id}");
+    $roundList = array();
+    $teams = array();
+    foreach($results as $val){
+        $roundList[(int)$val->getRonda()] = $val->Nombre;
+       if(!in_array($val->Nombre, $teams)){
+           array_push($teams, $val->Nombre);
+       }
+    }
+    $winner = array_count_values($roundList);
+    $winnerId = array_search(max($winner),$winner);
+    $table = "<div class='text-center fancyTitle'><h3>{$nombre}</h3></div>
+                <div class='row col-sm-12 centerTs'>
+                <div class='row col-sm-5 text-center'>
+                    <h1 class='text-center label-primary radLeft'>{$teams[0]}</h1>
+                </div>
+                <div class='row col-sm-2 text-center'>
+                    <h1 class='text-center label-default'>VS</h1>
+                </div>
+                <div class='row col-sm-5 text-right'>
+                    <h1 class='text-center label-danger radRight'>$teams[1]</h1>
+                </div>
+              </div>
+            <table id='tableTournaments' class='table'>
+                <thead>
+                    <tr>
+                        <th>Ronda</th>
+                        <th>Equipo</th>
+                    </tr>
+                </thead>
+                <tbody>";
+    foreach($roundList as $key => $value){
+        $table.= "<tr><td>".$key."</td><td>".$value."</td></tr>";
+    }
+    $table.= "</tbody>
+            </table>";
+    return array($winnerId, $table);
+}
+function getTournJSONResults($id, $nombre){
+    $roundJSON = new Round();
+    //SELECCIONAR EQUIPOS DE CADA RONDA Y PARTIDO DEL TORNEO
+    $select = "SELECT B.IdRonda as `match`, B.Ronda as round,c.IdEquipo as id,c.Nombre as name FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk WHERE B.IdTorneo_fk = {$id}";
+    $results = $roundJSON->selectAssoc($select);  
+    //SELECCIONAR EL EQUIPO GANADOR DEL TORNEO
+    $select2 = "SELECT B.IdGanador_fk as ganador FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk WHERE B.IdTorneo_fk = {$id} ORDER BY B.IdRonda DESC LIMIT 1";
+    $roundJSON2 = new Round();
+    $results2 = $roundJSON->selectAssoc($select2);
+    $ganador = $results2[0]['ganador'];
+    $teamWinner = array();
+    $rounds = array();
+    $nRes = 1;
+    foreach($results as $r){
+
+        $team = [
+            'name' => $r['name'],
+            'id'   => $r['name'],
+            'seed' => $r['id']
+        ];
+        if(!array_key_exists($r['round'], $rounds)){
+            $rounds[$r['round']] = []; 
+            $nRes++;
+        }
+        if(!array_key_exists($r['match'], $rounds[$r['round']])){
+            $rounds[$r['round']][$r['match']] = []; 
+        }
+        if($team['seed'] == $ganador){
+            $teamWinner = $team;
+        }
+
+        array_push($rounds[$r['round']][$r['match']],$team);
+    }   
+    $winnerName = $teamWinner['name'];
+    $rounds[$nRes][0] = array($teamWinner);
+    
+    $stringGracket = "[";
+    foreach($rounds as $a){
+        $stringGracket.= "[";
+        foreach($a as $b){
+            $stringGracket.= "[";
+            foreach($b as $c){
+                $stringGracket.= '{"name":"'.$c['name'].'", "id":"'.$c['id'].'", "seed":"'.$c['seed'].'"},';
+            }
+            $stringGracket = substr($stringGracket, 0, -1);
+            $stringGracket.= "],";
+        }
+        $stringGracket = substr($stringGracket, 0, -1);
+        $stringGracket.= "],";
+    }
+    $stringGracket = substr($stringGracket, 0, -1);
+    $stringGracket.= "]";
+    
+    return array($winnerName, "<div class='text-center fancyTitle'><h3>{$nombre}</h3></div>"
+    . "<div data-gracket='".$stringGracket."'></div>");
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE AYUDA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +408,16 @@ function shuffle_assoc($list) {
   }
   return $random; 
 } 
-
+//Crear paths, contraseñas...
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE PEFIL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,11 +457,13 @@ function cleanInput($value, $type){
     
     return $result;
     
-}//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE GESTIONAR ALUMNOS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function addUser(array $values){
+    echopre($values);
     $usu = new User();
     $usu->setLogin($values['Login']);
     $usu->setPassword($values['Password']);
@@ -292,8 +477,8 @@ function addUser(array $values){
     $stud->setEmail($values['Email']);
     $stud->setPermiso($values['Permiso']);
     $stud->setCurso_fk($values['Curso']);
-    $stud->setUsuario_fk($values['Usuario']);
-    $stud->save();
+    $stud->setUsuario_fk($values['Login']);
+    return $stud->save();
 }
 function delUser($id){
     $delUser = new Student();
@@ -303,4 +488,65 @@ function changePermisUser($id){
     $stud = new Student();
     $data = 'Permiso = case WHEN Permiso = 1 THEN 0 ELSE 1 END WHERE IdAlumno = '.$id.'';
     $stud->updateCleanRow($data);
+}
+function updateStudent($values){
+    print_r();
+    $stud = new Student();
+    $vals = array(
+        'Nombre'    => $values['nombre'],
+        'Apellido'  => $values['apellido'],
+        'Email'     => $values['email'],
+        'Curso_fk'  => $values['curso']
+    );
+    $where = 'IdAlumno = '.$values['id'].'';
+    return $stud->updateRow($vals, $where);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCIONES MI PERFIL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function changePassword($id, $pswd){
+    $pswdUser = new User();
+    $changes = array('Password' => ''.$pswd['pswd'].'');
+    $where = "Login = '{$id}'";
+    $_SESSION['user']->setPassword($pswd['pswd']);
+    return $pswdUser->updateRow($changes, $where);
+}
+function changeEmail($email){
+    $stud = new Student();
+    $stud->updateRow(array("Email" => $email), "IdAlumno = ".$_SESSION['student']->getIdAlumno());
+}
+function uploadImage(){
+    $dir = "public/images/users/";
+    $timeVal = generateRandomString();
+    $ext = substr($_FILES['inpFile']['name'], strpos($_FILES['inpFile']['name'], "."));
+    $imgName = $_SESSION['student']->getNombre().$_SESSION['student']->getApellido().$timeVal.$ext;
+    $target_file = $dir . basename($imgName);
+    $uploadOk = 1;
+    $type = exif_imagetype($_FILES['inpFile']['tmp_name']);
+    // Tamaño imagen
+    if ($_FILES["inpFile"]["size"] > 500000) {
+        return "Imagen demasiado grande. Max(500Kb)";
+    }
+    // Formatos de la imagen
+    if($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG) {
+        return "Error de extensión, Extensiones habilitadas (jpeg, png).";
+    }
+    // Guardar imagen
+    if (move_uploaded_file($_FILES["inpFile"]["tmp_name"], $target_file)) {
+        if($_SESSION['user']->getAvatar() != 'ico.png'){
+            // Eliminar imagen anterior si no es la imgaen por defecto
+            if(file_exists($dir.$_SESSION['user']->getAvatar())){
+                unlink($dir.$_SESSION['user']->getAvatar());
+            }
+        }
+        $_SESSION['user']->setAvatar($imgName);
+        $userImg = new User();
+        $userImg->updateRow(array("Avatar" => $imgName), "Login = '".$_SESSION['user']->getLogin()."'");
+        return true;
+    } else {
+        return "Lo siento, ha habido un error subiendo tu imagen.";
+    }
+    
 }

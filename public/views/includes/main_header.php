@@ -13,15 +13,15 @@ if(!isset($_SESSION['user'])){
                 <a data-toggle="dropdown">Categorías <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-header">Cursos</li>
-                    <li><a href='#'> 1r ESO </a></li>
-                    <li><a href='#'> 2n ESO </a></li>
-                    <li><a href='#'> 3r ESO </a></li>
-                    <li><a href='#'> 4rt ESO </a></li>
+                    <li><a href='?page=1ESO'> 1r ESO </a></li>
+                    <li><a href='?page=2ESO'> 2n ESO </a></li>
+                    <li><a href='?page=3ESO'> 3r ESO </a></li>
+                    <li><a href='?page=4ESO'> 4rt ESO </a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Deportes</li>
                     <?php
                     foreach($allSports as $sport){                     
-                        echo "<li><a href='#'>".($sport->getNombre())."</a></li>";
+                        echo "<li><a href='?page=infoSports'>".($sport->getNombre())."</a></li>";
                     }
                     ?>
                 </ul>
@@ -49,24 +49,25 @@ if(!isset($_SESSION['user'])){
                 <a data-toggle="dropdown">Categorías <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-header">Cursos</li>
-                    <li><a href='#'> 1r ESO </a></li>
-                    <li><a href='#'> 2n ESO </a></li>
-                    <li><a href='#'> 3r ESO </a></li>
-                    <li><a href='#'> 4rt ESO </a></li>
+                    <li><a href='?page=1ESO'> 1r ESO </a></li>
+                    <li><a href='?page=2ESO'> 2n ESO </a></li>
+                    <li><a href='?page=3ESO'> 3r ESO </a></li>
+                    <li><a href='?page=4ESO'> 4rt ESO </a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Deportes</li>
                     <?php
                     foreach($allSports as $sport){                     
-                        echo "<li><a href='#'>".($sport->getNombre())."</a></li>";
+                        echo "<li><a href='?page=infoSports'>".($sport->getNombre())."</a></li>";
                     }
                     ?>
                 </ul>
             </li>
             <li><a href="?page=historial_torneos">Historial de Torneos</a></li>
-            <li><a href="?page=gestion_torneos">Gestionar torneos</a></li>
+            <li><a href="?page=contacto">Información y Contacto</a></li>
             <?php
                 if($_SESSION['user']->getRango_fk() == 2){
                     echo '<li><a href="?page=nuevo_torneo">Nuevo torneo</a></li>';
+                    echo '<li><a href="?page=gestion_torneos">Gestionar torneos</a></li>';
                 }
             ?>        
         </ul>

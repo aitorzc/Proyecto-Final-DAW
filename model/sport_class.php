@@ -5,6 +5,7 @@
         private $IdDeporte;
         private $Nombre;
         private $Descripcion;
+        private $Imagen;
         
         // Constructor
         public function __construct() {
@@ -36,10 +37,19 @@
             $this->Descripcion = $Descripcion;
         }
         
+        function getImagen() {
+            return $this->Imagen;
+        }
+
+        function setImagen($Imagen) {
+            $this->Imagen = $Imagen;
+        }
+
         public function save(){
             $values = array(
                 'Nombre'        => $this->getNombre(),
-                'Descripcion'   => $this->getDescripcion()
+                'Descripcion'   => $this->getDescripcion(),
+                'Imagen'        => $this->getImagen()
             );
             return $this->insertRow($values);
         }

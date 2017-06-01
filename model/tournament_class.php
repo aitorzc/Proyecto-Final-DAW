@@ -8,6 +8,7 @@ class Tournament extends dbObject{
     private $IdDeporte_fk;
     private $IdSistema_fk;
     private $numParticipantes;
+    private $Modo;
     private $Fecha;
     private $Comentario;
     // Constructor
@@ -61,6 +62,14 @@ class Tournament extends dbObject{
         $this->numParticipantes = $numParticipantes;
     }
 
+    function getModo() {
+        return $this->Modo;
+    }
+
+    function setModo($Modo) {
+        $this->Modo = $Modo;
+    }
+
     function setFecha($Fecha) {
         $this->Fecha = $Fecha;
     }
@@ -78,6 +87,7 @@ class Tournament extends dbObject{
             'Nombre'            => $this->getNombre(),
             'IdDeporte_fk'      => $this->getIdDeporte_fk(),
             'NumParticipantes'  => $this->getNumParticipantes(),
+            'Modo'              => $this->getModo(),
             'Fecha'             => $this->getFecha(),
             'Comentario'        => $this->getComentario()
         );

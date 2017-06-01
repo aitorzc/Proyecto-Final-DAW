@@ -3,6 +3,11 @@ body{
     background-attachment: fixed;
     min-height: 90vh;
 }
+.selFile{
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    display: none;
+}
 .dropdown{
     cursor: pointer;
 }
@@ -14,7 +19,7 @@ footer{
 .container-fluid{
     margin-left: 10vw;
     margin-right: 10vw;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
     margin-bottom: 30px;
     padding:20px 20px 20px 20px;
 }
@@ -87,6 +92,9 @@ paddAll{
 .imgContainer{
     position: relative;
 }
+.centerTs{
+    margin-left:25px!important;
+}
 #imgProfile{
     opacity: 1;
     display: block;
@@ -94,6 +102,17 @@ paddAll{
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
+}
+.radLeft{
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+}
+.radRight{
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
+}
+.rad{
+    border-radius:10px;
 }
 #fadeEffect{
     transition: .5s ease;
@@ -111,3 +130,31 @@ paddAll{
 .hidden{
     visibility: hidden;
 }
+.margin-bt{
+    margin-bottom: 30px;
+}
+.fancyTitle{
+    font-family: 'Bree Serif', serif;
+}
+    /*GRACKET*/
+.g_gracket { width: 100%!important; background-color: #fff; padding: 55px 15px 5px; line-height: 100%; position: relative; overflow: hidden;}
+.g_round { float: left; margin-right: 70px; }
+.g_game { position: relative; margin-bottom: 15px; }
+.g_gracket h3 { margin: 0; padding: 10px 8px 8px; font-size: 18px; font-weight: normal; color: #fff}
+.g_team { background: #3597AE; }
+.g_team:last-child {  background: #ff5c33; }
+.g_round:last-child { margin-right: 20px; }
+.g_winner { background: #444; }
+.g_winner .g_team { background: none; }
+.g_current { cursor: pointer; background: #A0B43C!important; }
+.g_round_label { top: -5px; font-weight: normal; color: #CCC; text-align: center; font-size: 18px; }.g_gracket { width: 9999px; background-color: #fff; padding: 55px 15px 5px; line-height: 100%; position: relative; overflow: hidden;}
+.g_round { float: left; margin-right: 70px; }
+.g_game { position: relative; margin-bottom: 15px; }
+.g_gracket h3 { margin: 0; padding: 10px 8px 8px; font-size: 18px; font-weight: normal; color: #fff}
+.g_team { background: #3597AE; }
+.g_team:last-child {  background: #ff5c33; }
+.g_round:last-child { margin-right: 20px; }
+.g_winner { background: #FCB821; }
+.g_winner .g_team { background: none; }
+.g_current { cursor: pointer; background: #000066!important; }
+.g_round_label { top: -5px; font-weight: normal; color: #CCC; text-align: center; font-size: 18px; }   

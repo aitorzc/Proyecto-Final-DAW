@@ -14,11 +14,12 @@ include_once(INCLUDES.DS.'main_header.php');
 ?>
     
 <div class="container-fluid paddAll">
-    <table class="table">
+    <table id="historyTable" class="table">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Deporte</th>
+                <th>Modo</th>
                 <th>Participantes</th>
                 <th>Fecha</th>
                 <th>Comentario</th>
@@ -38,9 +39,15 @@ include_once(INCLUDES.DS.'main_header.php');
                         echo "<td class='text-left'>".$sport->getNombre()."</td>";
                     }
                 }
+                echo "<td class='text-left'>".$value->getModo()."</td>";
                 echo "<td class='text-left'>".$value->getNumParticipantes()."</td>";
                 echo "<td class='text-left'>".$value->getFecha()."</td>";
                 echo "<td class='text-left'>".$comentario."</td>";
+                if(isset($_SESSION['student'])){
+                    echo "<td><a href='index.php?page=results&showResults=".$value->getIdTorneo()."'>Ver</a></td>";
+                }else{
+                    echo "<td> - </td>";
+                }
                 echo "</tr>";
             }
             ?>

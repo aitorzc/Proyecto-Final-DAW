@@ -32,45 +32,42 @@ include_once(INCLUDES.DS.'main_header.php');
     
 <div class="container-fluid paddAll">
     <h3 class="text-center">Contáctanos</h3>
-    
-    <form class="form-horizontal" action="" method="post">
-        <!-- Title-->
         <div class="form-group">
             <div class="col-md-12">
                 <h4><kbd>Envíanos un mensaje</kbd></h4>
             </div>
         </div>
-        <!-- Name input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="name">Nombre</label>
+        <!-- Nombre-->
+        <div class="form-group col-md-12">
+            <label class="col-md-3 control-label" for="name"></label>
             <div class="col-md-6">
                 <input id="name" name="name" type="text" placeholder="Tu nombre" class="form-control">
             </div>
         </div>
 
-        <!-- Email input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="email">E-mail</label>
+        <!-- Email-->
+        <div class="form-group col-md-12">
+            <label class="col-md-3 control-label" for="email"></label>
             <div class="col-md-6">
-                <input id="email" name="email" type="text" placeholder="Tu email" class="form-control">
+                <input id="headers" name="email" type="text" placeholder="Tu email" class="form-control">
             </div>
         </div>
 
-        <!-- Message body -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="message">Mensaje</label>
+        <!-- Mensaje -->
+        <div class="form-group col-md-12">
+            <label class="col-md-3 control-label" for="message"></label>
             <div class="col-md-6">
                 <textarea class="form-control" id="message" name="message" placeholder="Introduzca su mensaje aquí..." rows="5"></textarea>
             </div>
         </div>
 
-        <!-- Form actions -->
-        <div class="form-group">
+        <!-- Enviar -->
+        <div class="form-group col-md-12">
+            <label class="col-md-3 control-label" for="send"></label>
             <div class="col-md-1">
-                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                <span class="btn btn-primary" id="sendMail">Enviar</span>
             </div>
         </div>
-    </form>
     
     <h4><kbd>Ubicación Google Maps</kbd></h4>
     <div id="googleMap" style="width:100%;height:400px;"></div>
