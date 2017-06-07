@@ -4,36 +4,47 @@ $dbConn = Connection::connect();
 dbObject::setDbCon($dbConn);
 
 session_start();
+
 // Action controller for ajax requests
 if(isset($_GET['isAjaxReq'])){
     return include_once CONTROLLER.DS.'action_controller.php';
 }
 if(isset($_GET['tryLog'])){
-//    if(!isset($_SESSION['attempts'])){
-//        $_SESSION['attempts'] = 0;
-//    }
-//    if(isset($_SESSION['timeToWait'])){
-//        $ttw = new DateTime(date('Y-m-d H:i:s', strtotime('+5 minutes')));
-//        $timeToLog = $ttw->diff(new DateTime(date('Y-m-d H:i:s')));
-//        $timeMessage = $timeToLog->i.' minutos y '.$timeToLog->s.' segundos<br>';
-//        if($timeToLog->i > 0 || $timeToLog->s > 0){
-//        }else{
-//            $_SESSION['attempts'] = 0;
-//        }
-//    }
-//    
-//    if(checkAttempts()){
-        $userLog = $_POST['nickLog'];
-        $pswdLog = $_POST['pswdLog'];
+    $userLog = $_POST['nickLog'];
+    $pswdLog = $_POST['pswdLog'];
 
-        if(checkLogin($userLog, $pswdLog)){
-            $_GET['page'] = 'inicio';
-        }else{
-            $_GET['tryLog'] = false;
+    if(checkLogin($userLog, $pswdLog)){
+        $_GET['page'] = 'inicio';
+    }else{
+        $_GET['tryLog'] = false;
+    }
+}
+if(isset($_GET['createSport'])){
+    if(!empty($_FILES['createImg']['name'])){
+        $imagen = $_FILES['createImg'];
+        $nombre = $_POST['createSportName'];
+        $descripcion = $_POST['createSportDesc'];
+        $responseMessage = createSport($nombre, $descripcion, $imagen);
+        if($responseMessage === true){
+            $responseMessage = "Deporte creado";
         }
-//    }else{
-//        $_SESSION['timeToWait'] = new DateTime(date('Y-m-d H:i:s', strtotime('+5 minutes')));
-//    }
+    }else{
+        $responseMessage = "Elija una imagen para el nuevo deporte por favor.";
+    }
+}
+if(isset($_GET['modifySport'])){
+    $id = $_POST['idSport'];
+    $imagen = $_FILES['modifyImg'];
+    $nombre = $_POST['modifySportName'];
+    $descripcion = $_POST['modifySportDesc'];
+    if(!empty($_FILES['modifyImg']['name'])){
+        $responseMessage = modifySport($id, $nombre, $descripcion, $imagen, true);
+        if($responseMessage === true){
+            $responseMessage = "Cambios guardados";
+        }
+    }else{
+        $responseMessage = modifySport($id, $nombre, $descripcion, "");
+    }
 }
 if(isset($_GET['saveProfileResults'])){
     if($_FILES['inpFile']['tmp_name'] != ""){
@@ -76,22 +87,23 @@ $data = array(
     'infoSports'        => PAGES.DS.'sportInfo_view.php',
     'registro'          => PAGES.DS.'register_view.php',
     'nuevo_torneo'      => PAGES.DS.'newTournament_view.php',
-    'out'               => PAGES.DS.'logOut.php',
     'mi_perfil'         => PAGES.DS.'myProfile_view.php',
     'mi_clase'          => PAGES.DS.'myClass_view.php',
     'gestion_torneos'   => PAGES.DS.'gestionTorneos_view.php',
-    'results'           => PAGES.DS.'tournResults_view.php'
+    'results'           => PAGES.DS.'tournResults_view.php',
+    'gestion_deportes'  => PAGES.DS.'gestionSports_view.php'
 );
 // Comprobación de paso por get
 if(empty($page) || !key_exists($page, $data)){
     $page = 'inicio';
 }
-//Control del permiso de los usuarios no logueados
-if(!isset($_SESSION['user']) && ($page == 'mi_perfil' || $page == 'mi_clase' || $page == 'nuevo_torneo' || $page == 'results' || $page == 'gestion_torneos')){
+//Control de permiso de usuarios no logueados
+if(!isset($_SESSION['user']) && ($page == 'mi_perfil' || $page == 'mi_clase' || $page == 'nuevo_torneo' || $page == 'results' || $page == 'gestion_torneos' || $page == 'gestion_deportes')){
     $page = 'inicio';
 }
+//Control de permiso de usuarios estudiantes
 if(isset($_SESSION['user'])){
-    if($_SESSION['user']->getRango_fk() == 1 && ($page == 'gestion_torneos' || $page == 'nuevo_torneo')){
+    if($_SESSION['user']->getRango_fk() == 1 && ($page == 'gestion_torneos' || $page == 'nuevo_torneo' || $page == 'gestion_deportes')){
         $page = 'inicio';
     }
 }

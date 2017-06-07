@@ -32,7 +32,7 @@ include_once(INCLUDES.DS.'main_header.php');
                     </div>
                     <div class="col-md-6 text-left">
                         <div class="lib-row lib-header">
-                            <?php echo $allS->getNombre(); ?>
+                            <?php echo "<a name='".$allS->getNombre()."'>".$allS->getNombre()."</a>"; ?>
                             <div class="lib-header-seperator"></div>
                         </div>
                         <div class="lib-row lib-desc">

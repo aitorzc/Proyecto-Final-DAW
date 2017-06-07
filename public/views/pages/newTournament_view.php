@@ -74,7 +74,7 @@
                         <!--Elegir que alumnos lo van a jugar-->
                         
                         <div class="col-xs-3 col-sm-3 players" style="display: none">
-                            <select name="players[]" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="24">
+                            <select name="players[]" class="form-control selectpicker" title="Elegir alumnos" multiple data-max-options="64">
                                 <?php
                                 foreach ($allStudents as $stud){
                                     if($stud->getCurso_fk() == $_SESSION['student']->getCurso_fk()){

@@ -18,8 +18,10 @@
     <script type="text/javascript" src="public/libs/gracket/jquery.gracket.min.js"></script>
     <!--google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
     <!--my libs-->
+    <link rel="icon" type="image/png" href="public/images/new_tournament/favicon.png" />
     <link rel="stylesheet" href="public/css/main.css">
     <script src="public/js/main.js"></script>
-    <title>Torneos</title>
+    <title>Torneos Ies Son Ferrer</title>
 </head>

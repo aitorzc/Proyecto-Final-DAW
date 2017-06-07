@@ -127,7 +127,6 @@ foreach($allCourses as $c){
                             <label>Tipo</label>
                             <div class="form-group">
                                 <label class="radio-inline"><input type="radio" checked="checked" value="1" name="userType">Alumno</label>
-                                <label class="radio-inline"><input type="radio" value="2" name="userType">Profesor</label>
                             </div>
                         </div>
                         <div class='col-xs-12'>

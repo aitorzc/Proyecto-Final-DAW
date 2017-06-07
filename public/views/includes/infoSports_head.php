@@ -8,6 +8,6 @@
     <!--my libs-->
     <link rel="stylesheet" href="public/css/infoSports.css">
     <script src="public/js/main.js"></script>
-    
+    <!--title-->
     <title>Torneos</title>
 </head>

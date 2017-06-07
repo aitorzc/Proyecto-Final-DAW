@@ -8,8 +8,29 @@ window.onload = function () {
         alert[i].previousSibling.previousSibling.addEventListener("focusout", formValidate);
     }
     
-}
+    //Validador del login
 
+//Enviar mail para que el usuario reciba una respuesta automática
+    $('#sendMail').click(function(){
+        $message = $('#message').val();
+        $headers = "From: " + $('#headers').val();
+        $subject = $('input[name="name"]').val();
+        var obj = {
+            subject:$subject,
+            headers:$headers,
+            message:$message
+        };
+        //Envío de datos por ajax (se recoge en el action_controller)
+        $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
+            .done(function(){
+                alertify.success("Mensaje enviado");
+            })
+            .fail(function() {
+                alertify.error("Error al enviar mensaje");
+            });
+    });
+    
+}
 function logValidate(){
 
     var nick = document.getElementById("nickLog");
@@ -19,22 +40,3 @@ function logValidate(){
         document.getElementById("sendLog").removeAttribute("disabled");
     }
 }
-
-$('#sendMail').click(function(){
-    console.log("entra");
-    $message = $('#message').val();
-    $headers = "From: " + $('#headers').val();
-    $subject = $('name').val();
-    var obj = {
-        subject:$subject,
-        headers:$headers,
-        message:$message
-    };
-    $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
-        .done(function(){
-            alertify.success("Mensaje enviado");
-        })
-        .fail(function() {
-            alertify.error("Error al enviar mensaje");
-        });
-});

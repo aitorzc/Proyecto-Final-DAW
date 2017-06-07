@@ -2,6 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE LOGIN
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Comprobar que el login y contraseña son correctos por peticion a la base de datos
 function checkLogin($userLog, $pswdLog){
 
     $user = new User();
@@ -21,7 +22,8 @@ function checkLogin($userLog, $pswdLog){
         $_SESSION['student'] = $result[0];
         return true;
     }
-}    
+}
+//Función para llevar el número de intentos de login
 function checkAttempts(){
     if(isset($_SESSION['attempts'])){
         if($_SESSION['attempts'] == 3){
@@ -32,16 +34,18 @@ function checkAttempts(){
         }
     }
 }
+//Funcion para enviar mails a mi correo
 function sendMail($subject, $message, $headers){
-    $to = "torneossonferrer@hotmail.com";
-    echo $subject."<br>";
-    echo $message."<br>";
-    echo $headers."<br>";
-    return mail($to, $subject, $message, $headers);
+    $to = "aitorzunigacanovas@gmail.com";
+    $fullMessage = $headers."\n".$message;
+    
+    return mail($to, $subject, $fullMessage, "From: aitor@torneos.ml");
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE NUEVO TORNEO
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Generar equipos dependiendo de si son equipos o indivudual utilizará una funcion u otra
 function generateTeams(array $studentsVals, $individual = FALSE){
     $students = array();
     foreach ($studentsVals as $studs){
@@ -55,13 +59,13 @@ function generateTeams(array $studentsVals, $individual = FALSE){
     $size = count($studentsShuffled)/2;
     return array_chunk($studentsShuffled, $size, true);
 }
-
+//Función para devolver un valor aleatorio de mi array para combinar nombres
 function returnName(){
     $defaultNames = array('Alpha','Beta','Gamma','Delta','Epsilon','Digamma','Stigma','Zeta','Heta','Eta','Theta','Iota','Yot','Kappa','Lamda','Mu','Nu','Xi','Omicron','Pi','San','Koppa','Rho','Sigma','Tau','Upsilon','Phi','Chi','Psi','Omega','Sampi','Sho');
     shuffle($defaultNames);
     return $defaultNames[0];
 }
-
+// Función para crear el torneo haciendo las inserciones a la DB haciendo una transacción
 function createTournament($nombre, $agrup, $clase, $arrDeporte, $fecha, $comentario, $teamA, $teamB, $clase){
     $idDeporte = $arrDeporte[0];
     $deporte = $arrDeporte[1];
@@ -93,7 +97,7 @@ function createTournament($nombre, $agrup, $clase, $arrDeporte, $fecha, $comenta
         return $createTournamentRes = "Ha habido un error inseperado, vuelve a crear el torneo por favor.";
     }
 }
-
+// Función para crear dos equipos para el torneo
 function generateTwoTeams($idTorneo, $teamA, $teamB){
     //Crear equipos tabla equipo
     $equipoA = new Team();
@@ -142,7 +146,7 @@ function generateTwoTeams($idTorneo, $teamA, $teamB){
         $equipo_alumno->save();
     }
 }
-
+// Función para crear equipos individuales para torneo individual
 function generateIndividualTeams($idTorneo, $clase){
     $equipos = array();
     $defaultNames = array('Alpha','Beta','Gamma','Delta','Epsilon','Digamma','Stigma','Zeta','Heta','Eta','Theta','Iota','Yot','Kappa','Lamda','Mu','Nu','Xi','Omicron','Pi','San','Koppa','Rho','Sigma','Tau','Upsilon','Phi','Chi','Psi','Omega','Sampi','Sho');
@@ -188,11 +192,12 @@ function generateIndividualTeams($idTorneo, $clase){
 // FUNCIONES DE GESTIONAR TORNEOS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Eliminar torneo especificado
 function deleteTournament($id){
     $delTourn = new Tournament();
     $delTourn->deleteWhere('IdTorneo = '.$id);
 }
-
+//Empezar un torneo nuevo
 function startTournament($id){
     $startTorneo = new Tournament();
     $tourn = $startTorneo->selectAdd("*", "WHERE IdTorneo = {$id}");
@@ -225,6 +230,7 @@ function startTournament($id){
     $insertResults.= "</tbody></table>";
     return $insertResults;
 }
+//Fúncion para insertar los ganadores de cada ronda
 function insertTournRes(array $values){
     $winners = array();
     foreach($values as $v){
@@ -235,10 +241,9 @@ function insertTournRes(array $values){
         $roundW->updateRow($changes, "IdRonda = {$round}");
     }
 }
+//Función para crear rondas si el torneo es individual cada vez que acabe una tanda de rondas hasta que finalice utilizara esta función
 function createNewRounds(array $values){
     
-        print_r($values);
-
     for($i = 0; $i < count($values);$i+=2){
         $newRound = new Round();
         $roundId = $values[$i]['roundid'];
@@ -261,7 +266,7 @@ function createNewRounds(array $values){
         $teamRound2->save();
     }
 }
-
+//Función para modificar un torneo
 function modifyTournament(array $values){
     $modTourn = new Tournament();
     $id = $values['id'];
@@ -276,6 +281,7 @@ function modifyTournament(array $values){
     $where = 'IdTorneo = '.$id.'';
     return $modTourn->updateRow($vals, $where);
 }
+//Función para mostrar el último torneo
 function showLastTourn(){
     $showTourn = new Tournament();
     $showTourn->getAll();
@@ -284,6 +290,8 @@ function showLastTourn(){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE MOSTRAR RESULTADOS TORNEO + (GRACKETS)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Función para comprobar que tipo de torneo es
 function checkResultsType($id){
     $tournCheck = new Tournament();
     $res = $tournCheck->selectWhere(array("Modo, Nombre"), "IdTorneo = {$id}");
@@ -294,7 +302,7 @@ function checkResultsType($id){
         return getTournJSONResults($id, $nombre);
     }
 }
-
+//Función para mostrar los resultados de un torneo por equipos
 function checkTournResults($id, $nombre){
     $roundJSON = new Round();
     $results = $roundJSON->selectClean("SELECT A.Ronda, B.Nombre FROM ronda A INNER JOIN equipo B ON A.IdGanador_fk = B.IdEquipo WHERE A.IdTorneo_fk = {$id}");
@@ -335,6 +343,8 @@ function checkTournResults($id, $nombre){
             </table>";
     return array($winnerId, $table);
 }
+
+//Función para mostrar resultados de un torneo individual utilizando GRACKETS
 function getTournJSONResults($id, $nombre){
     $roundJSON = new Round();
     //SELECCIONAR EQUIPOS DE CADA RONDA Y PARTIDO DEL TORNEO
@@ -395,6 +405,8 @@ function getTournJSONResults($id, $nombre){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE AYUDA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Función para acortar expresión muy utilizada para hacer "debug"
 function echopre($expression){
     echo "<pre>".print_r($expression, true)."</pre>";
 }
@@ -421,6 +433,8 @@ function generateRandomString($length = 10) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE PEFIL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Función para mostrar un mensaje dependiendo del permiso del usuario
 function verPermiso(){
     $value = $_SESSION['student']->getPermiso();
     if($value){
@@ -430,38 +444,11 @@ function verPermiso(){
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// FUNCIONES DE SANEAMIENTO
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function cleanInput($value, $type){
-    
-    $result = trim($value);
-    
-    switch ($type) {
-        case 'name':
-            $filter = FILTER_SANITIZE_STRING;
-            break;
-        case 'email':
-            $filter = FILTER_SANITIZE_EMAIL;
-            break;
-        case 'number':
-            $filter = FILTER_SANITIZE_NUMBER_INT;
-            break;
-        default:
-            $filter = FILTER_SANITIZE_STRING;
-            break;
-    }
-    $result = filter_var($result, FILTER_SANITIZE_MAGIC_QUOTES);
-    $result = filter_var($value, $type);
-    
-    return $result;
-    
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE GESTIONAR ALUMNOS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Función para crear un usuario y estudiante nuevo y insertarlo en la base de datos
 function addUser(array $values){
     echopre($values);
     $usu = new User();
@@ -480,15 +467,20 @@ function addUser(array $values){
     $stud->setUsuario_fk($values['Login']);
     return $stud->save();
 }
+//Función para eliminar un usuario y estudiante
 function delUser($id){
-    $delUser = new Student();
-    $delUser->deleteWhere('IdAlumno = '.$id.'');
+    $delStud = new Student();
+    $userVal = $delStud->selectWhere(array('Usuario_fk'), 'IdAlumno = '.$id.'');
+    $delUser = new User();
+    $delUser->deleteWhere("Login = '".$userVal[0]->getUsuario_fk()."'");
 }
+//Función para cambiar el permiso de un estudiante
 function changePermisUser($id){
     $stud = new Student();
     $data = 'Permiso = case WHEN Permiso = 1 THEN 0 ELSE 1 END WHERE IdAlumno = '.$id.'';
     $stud->updateCleanRow($data);
 }
+//Función para hacer cambios en los datos de un estudiante
 function updateStudent($values){
     print_r();
     $stud = new Student();
@@ -506,6 +498,7 @@ function updateStudent($values){
 // FUNCIONES MI PERFIL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Función para cambiar la contraseña del usuario logueado
 function changePassword($id, $pswd){
     $pswdUser = new User();
     $changes = array('Password' => ''.$pswd['pswd'].'');
@@ -513,10 +506,12 @@ function changePassword($id, $pswd){
     $_SESSION['user']->setPassword($pswd['pswd']);
     return $pswdUser->updateRow($changes, $where);
 }
+//Cambiar email del estudiante logueado
 function changeEmail($email){
     $stud = new Student();
     $stud->updateRow(array("Email" => $email), "IdAlumno = ".$_SESSION['student']->getIdAlumno());
 }
+//Función para subir una imagen
 function uploadImage(){
     $dir = "public/images/users/";
     $timeVal = generateRandomString();
@@ -549,4 +544,79 @@ function uploadImage(){
         return "Lo siento, ha habido un error subiendo tu imagen.";
     }
     
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCIONES DE GESTIONAR DEPORTES
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+//Función para crear un deporte subiendo imagen y datos a la DB
+function createSport($nombre, $descripcion, $imagen){
+    //Subir la imagen
+    $dir = "public/images/new_tournament/";
+    $timeVal = generateRandomString();
+    $ext = substr($imagen['name'], strpos($imagen['name'], "."));
+    $imgName = $timeVal.$ext;
+    $target_file = $dir . basename($imgName);
+    $uploadOk = 1;
+    $type = exif_imagetype($imagen['tmp_name']);
+    // Tamaño imagen
+    if ($imagen["size"] > 500000) {
+        return "Imagen demasiado grande. Max(500Kb)";
+    }
+    // Formatos de la imagen
+    if($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG) {
+        return "Error de extensión, extensiones habilitadas (jpeg, png).";
+    }
+    // Guardar imagen
+    if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+        $sportImg = new Sport();
+        $sportImg->setNombre($nombre);
+        $sportImg->setDescripcion($descripcion);
+        $sportImg->setImagen($imgName);
+        $sportImg->save();
+        return true;
+    } else {
+        return "Lo siento, ha habido un error creando el deporte.";
+    }
+}
+//Función para modificar un deporte
+function modifySport($id, $nombre, $descripcion, $imagen, $uploadImg = false){
+    
+    if($uploadImg == true){
+        //Subir la imagen
+        $dir = "public/images/new_tournament/";
+        $timeVal = generateRandomString();
+        $ext = substr($imagen['name'], strpos($imagen['name'], "."));
+        $imgName = $timeVal.$ext;
+        $target_file = $dir . basename($imgName);
+        $uploadOk = 1;
+        $type = exif_imagetype($imagen['tmp_name']);
+        // Tamaño imagen
+        if ($imagen["size"] > 500000) {
+            return "Imagen demasiado grande. Max(500Kb)";
+        }
+        // Formatos de la imagen
+        if($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG) {
+            return "Error de extensión, extensiones habilitadas (jpeg, png).";
+        }
+        // Guardar imagen
+        if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+            $sportImg = new Sport();
+            $sportImg->updateRow(array("Nombre" => $nombre, "Descripcion" => $descripcion,"Imagen" => $imgName), "IdDeporte = ".$id."");
+            return true;
+        } else {
+            return "Lo siento, ha habido un error modificando el deporte.";
+        }
+    }else{
+        $sportImg = new Sport();
+        $sportImg->updateRow(array("Nombre" => $nombre, "Descripcion" => $descripcion), "IdDeporte = ".$id."");
+        return "Cambios guardados";
+    }
+    
+}
+//Funcion para eliminar un deporte
+function deleteSport($id){
+    $delTourn = new Sport();
+    $delTourn->deleteWhere('IdDeporte = '.$id);
 }

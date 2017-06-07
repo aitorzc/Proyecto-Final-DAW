@@ -17,7 +17,7 @@ include_once(INCLUDES.DS.'main_header.php');
         </ul>
         <div class="tab-content">
             <div id="entrar" class="tab-pane fade in active">
-                <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal margin-bt">
+                <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal margin-bt col-md-offset-1">
                     <div class="form-group margin-bt">
                         <label class='col-sm-offset-12'></label>
                         <label class='col-sm-offset-12'></label>

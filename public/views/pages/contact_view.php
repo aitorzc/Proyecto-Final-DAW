@@ -71,17 +71,8 @@ include_once(INCLUDES.DS.'main_header.php');
     
     <h4><kbd>Ubicación Google Maps</kbd></h4>
     <div id="googleMap" style="width:100%;height:400px;"></div>
-    <script>
-    function myMap() {
-        var myCenter = new google.maps.LatLng(39.498063,2.503489);
-        var mapCanvas = document.getElementById("googleMap");
-        var mapOptions = {center: myCenter, zoom: 15};
-        var map = new google.maps.Map(mapCanvas, mapOptions);
-        var marker = new google.maps.Marker({position:myCenter});
-        marker.setMap(map);
-    }
-    </script>
-
+    
+    <script src="public/js/maps.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmCn3Ts7WjYWdBB1erSuqe-GPixK0_ZMI&callback=myMap"></script>
 </div>    
 <?php

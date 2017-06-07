@@ -11,24 +11,30 @@ body{
 .dropdown{
     cursor: pointer;
 }
+.logo{
+    position: relative;
+    bottom: 15px;
+}
 footer{
-    width: 100%;
+    width: 80%;
     position: fixed;
     bottom:0;
+    right: 10%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
 }
 .container-fluid{
     margin-left: 10vw;
     margin-right: 10vw;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     margin-bottom: 30px;
-    padding:20px 20px 20px 20px;
+    padding:10px 10px 5px 30px;
+    border-radius: 5px;
 }
-.myFooter{
-    text-align: center;
-    width: 50%;
-    margin: 0 auto;
-    margin-bottom: 0px!important;
-    background-color: rgba(255, 255, 255, 0.8);
+.imgEdit{
+    max-height: 300px;
+    max-width: 300px;
 }
 .sidenav {
     height: 100%;
@@ -40,6 +46,15 @@ footer{
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+}
+#maintitle{
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 2.8vw;
+}
+.navbar-default{
+    background-color: transparent!important;
+    border: none!important;
+    margin-bottom: 30px;
 }
 .sidenav a, .sidenav li {
     padding: 8px 8px 8px 32px;
@@ -70,7 +85,11 @@ footer{
     float: right;
     margin-right: 5%;
 }
-
+.container{
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
 paddAll{
     padding-left:10px;
     padding-right:10px;

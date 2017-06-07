@@ -29,7 +29,7 @@ include_once(INCLUDES.DS.'main_header.php');
         <tbody>
             <?php 
             $tourns = new Tournament();
-            $allTournsByDate = $tourns->selectAdd('*', 'ORDER BY Fecha ASC');
+            $allTournsByDate = $tourns->selectAdd('DISTINCT A.*', 'A INNER JOIN ronda B ON A.IdTorneo = B.IdTorneo_fk WHERE b.IdGanador_fk IS NOT NULL');
             foreach($allTournsByDate as $key => $value){
                 $comentario = strlen($value->getComentario())>=20?substr($value->getComentario(), 0, 20)."...":$value->getComentario();
                 echo "<tr>";
