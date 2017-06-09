@@ -20,7 +20,7 @@ foreach($allCourses as $c){
         <div class="panel-heading"><span id="thisCourse" class="<?php echo $idCurso ?>">Alumnos de <?php echo $curso ?></span>
         </div>
         <div class="panel-body">
-            <table id="classTable" class="table">
+            <table id="classTable" class="table" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>ID</th>

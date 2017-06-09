@@ -71,12 +71,18 @@ footer{
     position: fixed;
     bottom:0;
 }
-.container-fluid{
-    margin-left: 10vw;
-    margin-right: 10vw;
-    background-color: rgba(255, 255, 255, 0.6);
+.navbar-default{
+    background-color: transparent!important;
+    border: none!important;
     margin-bottom: 30px;
-    padding:20px 20px 20px 20px;
+}
+.container-fluid{
+    margin-left: 10vw!important;
+    margin-right: 10vw!important;
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 30px;
+    padding:10px 10px 5px 30px;
+    border-radius: 5px;
 }
 .myFooter{
     text-align: center;

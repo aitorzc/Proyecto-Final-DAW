@@ -10,7 +10,7 @@ if(!isset($_SESSION['user'])){
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
             </button>
-            <img width="100px" src="public/images/new_tournament/podium.png">
+            <img class="hidden-md hidden-sm" width="100px" src="public/images/new_tournament/podium.png">
         </div>
         <div class="collapse navbar-collapse" id="myNav">
             <ul class="nav navbar-nav">
@@ -27,7 +27,7 @@ if(!isset($_SESSION['user'])){
                         <li class="dropdown-header">Deportes</li>
                         <?php
                         foreach($allSports as $sport){                     
-                            echo "<li><a href='?page=infoSports'>".($sport->getNombre())."</a></li>";
+                            echo "<li><a href='?page=infoSports#".$sport->getNombre()."'>".($sport->getNombre())."</a></li>";
                         }
                         ?>
                     </ul>
@@ -36,7 +36,7 @@ if(!isset($_SESSION['user'])){
                 <li><a href="?page=contacto">Información y Contacto</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="?page=registro"><span class="glyphicon glyphicon-user"></span> Entra/Regístrate</a></li>
+                <li><a href="?page=registro"><span class="glyphicon glyphicon-user"></span> Entra/Contacta</a></li>
             </ul> 
         </div>
     </div>    
@@ -53,13 +53,13 @@ if(!isset($_SESSION['user'])){
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
             </button>
-            <img width="100px" src="public/images/new_tournament/podium.png">
+            <img class="hidden-md hidden-sm" width="100px" src="public/images/new_tournament/podium.png">
         </div>
         <div class="collapse navbar-collapse" id="myNav">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="?page=inicio">Inicio</a></li>
                 <li class="dropdown">
-                    <a data-toggle="dropdown">Categorías <span class="caret"></span></a>
+                    <a class="hidden-xs hidden-sm" data-toggle="dropdown">Categorías <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">Cursos</li>
                         <li><a href='?page=1ESO'> 1r ESO </a></li>
@@ -70,7 +70,7 @@ if(!isset($_SESSION['user'])){
                         <li class="dropdown-header">Deportes</li>
                         <?php
                         foreach($allSports as $sport){                     
-                            echo "<li><a href='?page=infoSports'>".($sport->getNombre())."</a></li>";
+                            echo "<li><a href='?page=infoSports#".$sport->getNombre()."'>".($sport->getNombre())."</a></li>";
                         }
                         ?>
                     </ul>

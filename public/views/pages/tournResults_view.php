@@ -25,7 +25,7 @@ include_once(INCLUDES.DS.'main_header.php');
             </div>    
         </div>
     </div>    
-    
+    <?php echo $res[2]; ?>
 </div>    
 <?php
 //FOOTER

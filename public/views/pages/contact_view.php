@@ -15,7 +15,7 @@ include_once(INCLUDES.DS.'main_header.php');
 <div class="container-fluid paddAll">
     <div class="col-md-offset-2 col-md-8 text-left">
         <h3 class="text-center">Información</h3>
-        <p>El Instituto Ies Sonferrer es una institución pública para promover la enseñanza, y el estudio. En sus actividades se incluye
+        <p>El Instituto Ies Son ferrer es una institución pública para promover la enseñanza y el estudio. En sus actividades se incluye
             la práctica de deportes en grupo con el objetivo de fomentar la actividad deportiva.
         </p>
         <p>

@@ -17,6 +17,9 @@ include_once(INCLUDES.DS.'main_header.php');
         </ul>
         <div class="tab-content">
             <div id="entrar" class="tab-pane fade in active">
+                <?php
+                if($_SESSION['checkCaptcha'] == "OK"){
+                ?>
                 <form action="index.php?page=registro&tryLog=true" method="POST" class="form-horizontal margin-bt col-md-offset-1">
                     <div class="form-group margin-bt">
                         <label class='col-sm-offset-12'></label>
@@ -34,20 +37,17 @@ include_once(INCLUDES.DS.'main_header.php');
                     </div>
                     <div class="form-group">        
                         <div class="col-sm-offset-2 col-sm-8">
-                            <?php
-                            if(isset($_GET['tryLog'])){
-                                if(!$_GET['tryLog']){
-                                    echo '<div class="g-recaptcha" data-sitekey="6LeGnyMUAAAAAB650V5WA_pVlZiclcuS4ETj7IcB"></div>';
-                                    echo '<input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">';
-                                    echo '<span style="font-size:14px" class="label label-danger">Usuario o contraseña incorrectos</span>';
-                                }
-                            }else{
-                                echo '<input type="submit" name="sendLog" id="sendLog" disabled class="btn btn-info">';
-                            }
-                            ?>
+                            <input type="submit" name="sendLog" value="Enviar" id="sendLog" disabled class="btn btn-info">
                         </div>
                     </div>
                 </form>
+                <?php
+                }else{
+                    echo '<div class="col-sm-offset-12 margin-bt"></div><div class="col-sm-offset-3"><span style="font-size:14px" class="label label-danger">Usuario o contraseña incorrectos</span>';
+                    require_once('public/libs/recaptcha/verify.php');
+                    echo "</div>";
+                }
+                ?>
             </div>
             <div id="contacta" class="tab-pane fade">
                 <form class="margin-bt">

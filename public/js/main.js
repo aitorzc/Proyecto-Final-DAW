@@ -198,7 +198,7 @@ $(function () {
     //FUNCIONES
     
     function validateNewTournament(){
-        $nValidPlayers = [4, 8, 16, 32, 64];
+        $nValidPlayers = [4, 8, 16];
         $players = $('.btn.dropdown-toggle.btn-default')[3].getAttribute("title");
         $nPlayers = $players.split(",");
         $message = "";
@@ -219,7 +219,7 @@ $(function () {
         }
         if ($('select[name="gameType"]').val() == 'Individual')
         if (jQuery.inArray($nPlayers.length, $nValidPlayers) == -1) {
-            $message += "En torneo individual el número de jugadores debe ser uno de los siguientes: 4, 8, 16, 32, 64<br>";
+            $message += "En torneo individual el número de jugadores debe ser uno de los siguientes: 4, 8, 16<br>";
         }
         if (!$dateCheck.test($('#myDate').val())) {
             $message += "Elige una fecha<br>";
@@ -385,13 +385,15 @@ $(function () {
         }
     });
 
+
     function checkTournChanges(){
         $message = "";
         $nombre = $('input[name="modifyNombre"]');
         $fecha = $('input[name="modifyFecha"]');
         $comentario = $('textarea[name="modifyComentario"]');
         //Solo letras válidas
-        if(!$nombre.val().match(/^[a-zA-Z ]+$/)){
+        if($nombre.val().length > 40){
+            console.log($nombre.val());
             $message+= "Nombre incorrecto<br>";
         }
         //Validar fecha con formato(YYYY-MM-DD hh:mm:ss)
@@ -399,7 +401,8 @@ $(function () {
             $message+= "Debes introducir una fecha válida (YYYY-MM-DD hh:mm:ss)<br>";
         }
         //Solo letras válidas
-        if(!$comentario.val().match(/^[a-zA-Z ]+$/)){
+        if($comentario.val().length > 80){
+            console.log($comentario.val());
             $message+= "Comentario no válido<br>";
         }
         return $message;
@@ -588,11 +591,11 @@ $(function () {
     function validateNew(){
         $message = "";
         //Verificar que es un nombre sin números ni carácteres especiales
-        if(!$('input[name="createName"]').val().match('^[a-zA-Z]{3,16}$')){
+        if(!$('input[name="createName"]').val().match('^[a-zA-Z]{2,16}$')){
             $message+= "Nombre no válido<br>";
         }
         //Verificar que es un nombre sin números ni carácteres especiales
-        if(!$('input[name="createSurname"]').val().match('^[a-zA-Z]{3,16}$')){
+        if(!$('input[name="createSurname"]').val().match('^[a-zA-Z]{2,16}$')){
             $message+= "Apellido no válido<br>";
         }
         //Verificar que empiece por cualquier carácter seguido de @ seguido de cualquier caracter, un punto y finalmente dos letras o más.
@@ -615,46 +618,72 @@ $(function () {
     }
     // JQUERY API ACTIONS
     $('#classTable').DataTable({
+        search: "Buscar:",
         ordering:false,
+        responsive: true,
         "language": {
             "lengthMenu": "Mostrar _MENU_ resultados por página",
             "zeroRecords": "Ningún resultado encontrado",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay resultados disponibles",
-            "infoFiltered": "(filtered from _MAX_ total records)"
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            search: "Buscar:",
+            "paginate": {
+              "previous": "Anterior",
+              "next": "Siguiente"
+            }
         }
     });
     $('#tableTournaments').DataTable({
-        "searching": false,
-        "paging":   false,
-        "info":     false,
+        searching: false,
+        paging:   false,
+        info:     false,
+        responsive: true,
+        "search": "Buscar:",
         "language": {
             "lengthMenu": "Mostrar _MENU_ resultados por página",
             "zeroRecords": "Ningún resultado encontrado",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay resultados disponibles",
-            "infoFiltered": "(filtered from _MAX_ total records)"
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "paginate": {
+              "previous": "Anterior",
+              "next": "Siguiente"
+            }
         }
     });
     $('#tableSports').DataTable({
-        "searching": false,
-        "paging":   false,
-        "info":     false,
+        searching: false,
+        responsive: true,
+        paging:   false,
+        info:     false,
+        "search": "Buscar:",
         "language": {
             "lengthMenu": "Mostrar _MENU_ resultados por página",
             "zeroRecords": "Ningún resultado encontrado",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay resultados disponibles",
-            "infoFiltered": "(filtered from _MAX_ total records)"
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "paginate": {
+              "previous": "Anterior",
+              "next": "Siguiente"
+            }
         }
     });
     $('#table1ESO').DataTable({
+        responsive: true,
+        "search": "Buscar:",
         "language": {
             "lengthMenu": "Mostrar _MENU_ resultados por página",
             "zeroRecords": "Ningún resultado encontrado",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay resultados disponibles",
-            "infoFiltered": "(filtered from _MAX_ total records)"
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "search": "Buscar:",
+            "paginate": {
+              "previous": "Anterior",
+              "next": "Siguiente"
+            }
         }
     });
     $("[data-gracket]").gracket({
@@ -671,25 +700,39 @@ $(function () {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Enviar mail para que el usuario reciba una respuesta automática
     $('#sendMail').click(function(){
+        $btn = $(this);
         $message = $('#message').val();
         $headers = "From: " + $('#headers').val();
         $subject = $('input[name="name"]').val();
-        var obj = {
+        if(checkValues($subject, $headers, $message)){
+            $btn.addClass("disabled");
+            var obj = {
             subject:$subject,
             headers:$headers,
             message:$message
-        };
-        //Envío de datos por ajax (se recoge en el action_controller)
-        $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
-            .done(function(){
-                alertify.success("Mensaje enviado");
-            })
-            .fail(function() {
-                alertify.error("Error al enviar mensaje");
-            });
+            };
+            //Envío de datos por ajax (se recoge en el action_controller)
+            $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
+                .done(function(){
+                    alertify.success("Mensaje enviado");
+                    $btn.removeClass("disabled");
+                })
+                .fail(function() {
+                    alertify.error("Error al enviar mensaje");
+                });
+        }else{
+            alertify.error("Por favor, complete todos los campos");
+            
+        }
+        
     });
 
-
+    function checkValues(subject, headers, message){
+        if(subject == "" || headers == "" || message == ""){
+            return false;
+        }
+        return true;
+    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //GESTIONAR DEPORTES
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

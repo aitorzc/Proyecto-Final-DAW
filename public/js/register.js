@@ -12,23 +12,38 @@ window.onload = function () {
 
 //Enviar mail para que el usuario reciba una respuesta automática
     $('#sendMail').click(function(){
+        $btn = $(this);
         $message = $('#message').val();
         $headers = "From: " + $('#headers').val();
         $subject = $('input[name="name"]').val();
-        var obj = {
+        if(checkValues($subject, $headers, $message)){
+            $btn.addClass("disabled");
+            var obj = {
             subject:$subject,
             headers:$headers,
             message:$message
-        };
-        //Envío de datos por ajax (se recoge en el action_controller)
-        $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
-            .done(function(){
-                alertify.success("Mensaje enviado");
-            })
-            .fail(function() {
-                alertify.error("Error al enviar mensaje");
-            });
+            };
+            //Envío de datos por ajax (se recoge en el action_controller)
+            $.get("index.php", {isAjaxReq: true, sendMail: JSON.stringify(obj)})
+                .done(function(){
+                    alertify.success("Mensaje enviado");
+                    $btn.removeClass("disabled");
+                })
+                .fail(function() {
+                    alertify.error("Error al enviar mensaje");
+                });
+        }else{
+            alertify.error("Por favor, complete todos los campos");
+            
+        }
+        
     });
+    function checkValues(subject, headers, message){
+        if(subject == "" || headers == "" || message == ""){
+            return false;
+        }
+        return true;
+    }
     
 }
 function logValidate(){
