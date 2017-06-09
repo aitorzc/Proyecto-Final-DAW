@@ -23,20 +23,9 @@ function checkLogin($userLog, $pswdLog){
         return true;
     }
 }
-//Función para llevar el número de intentos de login
-function checkAttempts(){
-    if(isset($_SESSION['attempts'])){
-        if($_SESSION['attempts'] == 3){
-            return false;
-        }else{
-            $_SESSION['attempts']++;
-            return true;
-        }
-    }
-}
 //Funcion para enviar mails a mi correo
 function sendMail($subject, $message, $headers){
-    $to = "aitorzunigacanovas@gmail.com";
+    $to = "aitor@torneos.ml";
     $fullMessage = $headers."\n".$message;
     
     return mail($to, $subject, $fullMessage, "From: aitor@torneos.ml");
@@ -269,10 +258,10 @@ function createNewRounds(array $values){
 //Función para modificar un torneo
 function modifyTournament(array $values){
     $modTourn = new Tournament();
-    $id = $values['id'];
-    $nombre = $values['nombre'];
+    $id = addcslashes($values['id'], "'\";");
+    $nombre = addcslashes($values['nombre'], "'\";");
     $fecha = $values['fecha'];
-    $comentario = $values['comentario'];
+    $comentario = addcslashes($values['comentario'], "'\";");
     $vals = array(
         'Nombre'        => $nombre,
         'Fecha'         => $fecha,
@@ -284,8 +273,9 @@ function modifyTournament(array $values){
 //Función para mostrar el último torneo
 function showLastTourn(){
     $showTourn = new Tournament();
-    $showTourn->getAll();
-    
+    $select = "SELECT A.IdTorneo FROM torneo A INNER JOIN ronda B ON A.IdTorneo = B.IdTorneo_fk WHERE b.IdGanador_fk IS NOT NULL ORDER BY Fecha DESC LIMIT 1";
+    $val = $showTourn->selectClean($select);
+    return $val[0]->getIdTorneo();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCIONES DE MOSTRAR RESULTADOS TORNEO + (GRACKETS)
@@ -304,15 +294,28 @@ function checkResultsType($id){
 }
 //Función para mostrar los resultados de un torneo por equipos
 function checkTournResults($id, $nombre){
+    //MOSTRAR RESULTADOS DE CADA RONDA
     $roundJSON = new Round();
     $results = $roundJSON->selectClean("SELECT A.Ronda, B.Nombre FROM ronda A INNER JOIN equipo B ON A.IdGanador_fk = B.IdEquipo WHERE A.IdTorneo_fk = {$id}");
+    //MOSTRAR ALUMNOS DE CADA EQUIPO
+    $roundJSON2 = new Round();
+    $results2 = $roundJSON2->selectAssoc("SELECT DISTINCT E.Nombre as `NomAl`, E.Apellido as `ApAl`, c.Nombre AS equipo FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk INNER JOIN equipo_alumno D ON D.IdEquipo_fk = c.IdEquipo INNER JOIN alumno E ON E.IdAlumno = D.IdAlumno_fk WHERE B.IdTorneo_fk = {$id}");
+    // RECOGER EQUIPOS
+    $teamObj = new Team();
+    $selTeams = $teamObj->selectClean("SELECT Nombre FROM `equipo` WHERE IdTorneo_fk = {$id}");
     $roundList = array();
     $teams = array();
+    
+    $studString="<table><thead><tr><th>Jugadores</th></tr></thead><tbody>";
+    foreach($results2 as $r2){
+        $studString.="<tr><td>".$r2['NomAl']." ".$r2['ApAl']."(<b>".$r2['equipo'].")</b></td></tr>";
+    }
+    $studString.="</tbody></table>";
     foreach($results as $val){
         $roundList[(int)$val->getRonda()] = $val->Nombre;
-       if(!in_array($val->Nombre, $teams)){
-           array_push($teams, $val->Nombre);
-       }
+    }
+    foreach($selTeams as $t){
+        array_push($teams, $t->getNombre());
     }
     $winner = array_count_values($roundList);
     $winnerId = array_search(max($winner),$winner);
@@ -341,11 +344,12 @@ function checkTournResults($id, $nombre){
     }
     $table.= "</tbody>
             </table>";
-    return array($winnerId, $table);
+    return array($winnerId, $table, $studString);
 }
 
 //Función para mostrar resultados de un torneo individual utilizando GRACKETS
 function getTournJSONResults($id, $nombre){
+    
     $roundJSON = new Round();
     //SELECCIONAR EQUIPOS DE CADA RONDA Y PARTIDO DEL TORNEO
     $select = "SELECT B.IdRonda as `match`, B.Ronda as round,c.IdEquipo as id,c.Nombre as name FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk WHERE B.IdTorneo_fk = {$id}";
@@ -355,9 +359,18 @@ function getTournJSONResults($id, $nombre){
     $roundJSON2 = new Round();
     $results2 = $roundJSON->selectAssoc($select2);
     $ganador = $results2[0]['ganador'];
+    //SELECCIONAR LOS ALUMNOS QUE HAN JUGADO
+    $roundJSON3 = new Round();
+    $select3 = "SELECT DISTINCT E.Nombre as `NomAl`, E.Apellido as `ApAl` FROM equipo_ronda A INNER JOIN ronda B ON A.IdRonda_fk = B.IdRonda INNER JOIN equipo C ON C.IdEquipo = A.IdEquipo_fk INNER JOIN equipo_alumno D ON D.IdEquipo_fk = c.IdEquipo INNER JOIN alumno E ON E.IdAlumno = D.IdAlumno_fk WHERE B.IdTorneo_fk = {$id}";
+    $results3 = $roundJSON3->selectAssoc($select3); 
     $teamWinner = array();
     $rounds = array();
     $nRes = 1;
+    $studString="<table><thead><tr><th>Jugadores</th></tr></thead><tbody>";
+    foreach($results3 as $r3){
+        $studString.= "<tr><td>".$r3['NomAl']." ".$r3['ApAl']."</td></tr>";
+    }
+    $studString.="</tbody></table>";
     foreach($results as $r){
 
         $team = [
@@ -397,9 +410,8 @@ function getTournJSONResults($id, $nombre){
     }
     $stringGracket = substr($stringGracket, 0, -1);
     $stringGracket.= "]";
-    
     return array($winnerName, "<div class='text-center fancyTitle'><h3>{$nombre}</h3></div>"
-    . "<div data-gracket='".$stringGracket."'></div>");
+    . "<div data-gracket='".$stringGracket."'></div>", $studString);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -485,10 +497,10 @@ function updateStudent($values){
     print_r();
     $stud = new Student();
     $vals = array(
-        'Nombre'    => $values['nombre'],
-        'Apellido'  => $values['apellido'],
-        'Email'     => $values['email'],
-        'Curso_fk'  => $values['curso']
+        'Nombre'    => addcslashes($values['nombre'], "\"';"),
+        'Apellido'  => addcslashes($values['apellido'], "\"';"),
+        'Email'     => addcslashes($values['email'], "\"';"),
+        'Curso_fk'  => addcslashes($values['curso'], "\"';")
     );
     $where = 'IdAlumno = '.$values['id'].'';
     return $stud->updateRow($vals, $where);
@@ -501,15 +513,16 @@ function updateStudent($values){
 //Función para cambiar la contraseña del usuario logueado
 function changePassword($id, $pswd){
     $pswdUser = new User();
-    $changes = array('Password' => ''.$pswd['pswd'].'');
+    $changes = array('Password' => ''. addcslashes($pswd['pswd'], "\"';").'');
     $where = "Login = '{$id}'";
-    $_SESSION['user']->setPassword($pswd['pswd']);
+    $_SESSION['user']->setPassword(addcslashes($pswd['pswd'], "\"';"));
     return $pswdUser->updateRow($changes, $where);
 }
 //Cambiar email del estudiante logueado
 function changeEmail($email){
     $stud = new Student();
-    $stud->updateRow(array("Email" => $email), "IdAlumno = ".$_SESSION['student']->getIdAlumno());
+    $stud->updateRow(array("Email" => addcslashes($email, "\"';")), "IdAlumno = ".$_SESSION['student']->getIdAlumno());
+    $_SESSION['student']->setEmail(addcslashes($email, "\"';"));
 }
 //Función para subir una imagen
 function uploadImage(){
@@ -571,9 +584,9 @@ function createSport($nombre, $descripcion, $imagen){
     // Guardar imagen
     if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
         $sportImg = new Sport();
-        $sportImg->setNombre($nombre);
-        $sportImg->setDescripcion($descripcion);
-        $sportImg->setImagen($imgName);
+        $sportImg->setNombre(addcslashes($nombre, "\"';"));
+        $sportImg->setDescripcion(addcslashes($descripcion, "\"';"));
+        $sportImg->setImagen(addcslashes($imgName, "\"';"));
         $sportImg->save();
         return true;
     } else {
@@ -603,14 +616,14 @@ function modifySport($id, $nombre, $descripcion, $imagen, $uploadImg = false){
         // Guardar imagen
         if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
             $sportImg = new Sport();
-            $sportImg->updateRow(array("Nombre" => $nombre, "Descripcion" => $descripcion,"Imagen" => $imgName), "IdDeporte = ".$id."");
+            $sportImg->updateRow(array("Nombre" => addcslashes($nombre,"\"';"), "Descripcion" => addcslashes($descripcion,"\"';"),"Imagen" => $imgName), "IdDeporte = ".$id."");
             return true;
         } else {
             return "Lo siento, ha habido un error modificando el deporte.";
         }
     }else{
         $sportImg = new Sport();
-        $sportImg->updateRow(array("Nombre" => $nombre, "Descripcion" => $descripcion), "IdDeporte = ".$id."");
+        $sportImg->updateRow(array("Nombre" => addcslashes($nombre, "\"';"), "Descripcion" => addcslashes($descripcion, "\"';")), "IdDeporte = ".$id."");
         return "Cambios guardados";
     }
     

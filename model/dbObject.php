@@ -22,7 +22,7 @@ abstract class dbObject {
         return $this->tableName;
     }
     //insertar lineas en la db y que devuelva el id
-    protected function insertRow(array $changes) {
+    protected function insertRow(array $changes){
         $consulta = "INSERT INTO {$this->getTableName()} (".implode(",", array_keys($changes)).") VALUES (" . "'" . implode("','", $changes) . "'" . ");";
 
         if ($this->db->query($consulta) === true) {
@@ -37,7 +37,6 @@ abstract class dbObject {
     }
     //borrar lineas en la db
     public function deleteWhere($where) {
-        $where = mysqli_real_escape_string($where);
         $consulta = "DELETE FROM {$this->getTableName()} WHERE {$where}";
         if ($this->db->query($consulta) === true) {
             return true;
@@ -47,7 +46,6 @@ abstract class dbObject {
     }
     //Actualizar lineas en la db pasando parámetro de los valores a cambiar un array asociativo y string para where
     public function updateRow(array $changes, $where){
-        $where = mysqli_real_escape_string($this->db, $where);
         $setVals = array();
         foreach ($changes as $field => $value){
             array_push($setVals, "{$field} = '{$value}'");
@@ -61,7 +59,6 @@ abstract class dbObject {
     }
     //Actualizar lineas en la db consulta limpia
     public function updateCleanRow($data){
-        $data = mysqli_real_escape_string($this->db, $data);
         $consulta = "UPDATE {$this->getTableName()} SET ".$data."";
         echo $consulta;
         if ($this->db->query($consulta) === true) {
@@ -72,7 +69,6 @@ abstract class dbObject {
     }
     //Select en la db con fetch asociativo
     public function selectAssoc($select){
-        $select = mysqli_real_escape_string($this->db, $select);
         $consulta = $this->db->query($select);
         $list = array();
         while ($row = $consulta->fetch_assoc()) {

@@ -7,18 +7,31 @@ session_start();
 
 // Action controller for ajax requests
 if(isset($_GET['isAjaxReq'])){
-    return include_once CONTROLLER.DS.'action_controller.php';
+    return include_once CONTROLLER.DS.'AJAXaction_controller.php';
+}
+// PETICIONES 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Login
+if(!isset($_SESSION['checkCaptcha'])){
+    $_SESSION['checkCaptcha'] = "OK";
 }
 if(isset($_GET['tryLog'])){
-    $userLog = $_POST['nickLog'];
-    $pswdLog = $_POST['pswdLog'];
+    
+    $userLog = isset($_POST['nickLog'])?$_POST['nickLog']:"";
+    $pswdLog = isset($_POST['pswdLog'])?$_POST['pswdLog']:"";
 
     if(checkLogin($userLog, $pswdLog)){
         $_GET['page'] = 'inicio';
     }else{
         $_GET['tryLog'] = false;
+        $_SESSION['checkCaptcha'] = "BAD";
     }
 }
+
+//GESTOR DEPORTES
+
+//Crear un deporte
 if(isset($_GET['createSport'])){
     if(!empty($_FILES['createImg']['name'])){
         $imagen = $_FILES['createImg'];
@@ -32,6 +45,7 @@ if(isset($_GET['createSport'])){
         $responseMessage = "Elija una imagen para el nuevo deporte por favor.";
     }
 }
+//Modificar un deporte
 if(isset($_GET['modifySport'])){
     $id = $_POST['idSport'];
     $imagen = $_FILES['modifyImg'];
@@ -46,6 +60,9 @@ if(isset($_GET['modifySport'])){
         $responseMessage = modifySport($id, $nombre, $descripcion, "");
     }
 }
+//Mi PERFIL
+
+//Guardar cambios de perfil
 if(isset($_GET['saveProfileResults'])){
     if($_FILES['inpFile']['tmp_name'] != ""){
         $responseMessage = uploadImage();
@@ -58,24 +75,50 @@ if(isset($_GET['saveProfileResults'])){
     }
     
 }
-if(isset($_GET['showResults'])){
-    $res = checkResultsType($_GET['showResults']);
+//TORNEOS
+
+//Empezar torneo
+if(isset($_GET['startTournament'])){
+    $stringTourn = startTournament($_GET['startTournament']);
 }
+//Recoger torneos que ya se hayan jugado
+if(isset($_GET['page'])){
+    if($_GET['page'] == 'historial_torneos'){
+        $tournsHistory = new Tournament();
+        $allTournsByDate = $tournsHistory->selectAdd('DISTINCT A.*', 'A INNER JOIN ronda B ON A.IdTorneo = B.IdTorneo_fk WHERE b.IdGanador_fk IS NOT NULL');
+    }
+}
+//Mostrar resultados torneo
+if(isset($_GET['showResults'])){
+    //Si el torneo es el último
+    if(isset($_GET['lastRes'])){
+        //Si no estas logueado redireccion para loguearse
+        if(!isset($_SESSION['user'])){
+            $_GET['page'] = 'registro';
+        }else{
+            //Mostrar resultado del último torneo
+            $res = checkResultsType(showLastTourn());
+            $_GET['page'] = 'results';
+        }
+    //Mostrar resultado del torneo solicitado    
+    }else{
+        $res = checkResultsType($_GET['showResults']);
+    }
+}
+//PAGE es el parámetro para elegir que página se esta viendo
 if(isset($_GET['page'])){
     if($_GET['page'] == 'out'){
         session_destroy();
         $_GET['page'] = 'registro';
     }
 }
-if(isset($_GET['startTournament'])){
-    $stringTourn = startTournament($_GET['startTournament']);
-}
+
 // Inicio de buffer
 ob_start();
 
 // Parámetro para elegir página
 $page = isset($_GET['page'])?$_GET['page']:'inicio';
-
+//Traductor del valor de page a cada página
 $data = array(
     'inicio'            => PAGES.DS.'mainVisitor_view.php',
     'historial_torneos' => PAGES.DS.'tournamentHistory_view.php',
@@ -107,7 +150,7 @@ if(isset($_SESSION['user'])){
         $page = 'inicio';
     }
 }
-
+//EXTRACCIÓN DE DATOS BASE
 //Recogemos lista de deportes
 $sports = new Sport();
 $allSports = $sports->getAll();
@@ -123,7 +166,7 @@ $allStudents = $students->getAll();
 $tournaments = new Tournament();
 $allTournaments = $tournaments->getAll();
 $studs = new Student();
-// Myclass query
+
 if(isset($_SESSION['student'])){
     $selectStuds = array('*');
     $allStuds = $studs->selectWhere($selectStuds, 'Curso_fk = '.$_SESSION['student']->getCurso_fk().' ORDER BY Permiso DESC, Nombre ASC');
@@ -134,6 +177,8 @@ $studs1ESO = $studsCourse->selectAdd($selNameUser, 'WHERE Curso_fk = 1 AND Permi
 $studs2ESO = $studsCourse->selectAdd($selNameUser, 'WHERE Curso_fk = 2 AND Permiso = 1 ORDER BY Nombre DESC');
 $studs3ESO = $studsCourse->selectAdd($selNameUser, 'WHERE Curso_fk = 3 AND Permiso = 1 ORDER BY Nombre DESC');
 $studs4ESO = $studsCourse->selectAdd($selNameUser, 'WHERE Curso_fk = 4 AND Permiso = 1 ORDER BY Nombre DESC');
+
+//MOSTRAR VISTA
 foreach($data as $name => $url){
     if($page == $name){   
         //Función para que el output de html no se acumule
@@ -142,10 +187,8 @@ foreach($data as $name => $url){
     }
 }
 
-//TODO: Sistema de clases para views, models y controllers  
-//TODO: Crear urls amigables
 
-
+//Fin de conexión
 Connection::disconnect();
 
 
